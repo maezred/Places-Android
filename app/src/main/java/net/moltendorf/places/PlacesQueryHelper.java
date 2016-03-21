@@ -17,7 +17,7 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 	private static final String TAG = "PlacesQueryHelper";
 
 	private static final String DB_NAME    = "places_db";
-	private static final int    DB_VERSION = 1;
+	private static final int    DB_VERSION = 2;
 
 	private static final String TBL_PLACES       = "places";
 	private static final String TBL_PLACETAGS    = "placetags";
@@ -70,6 +70,8 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 
 	private PlacesQueryHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
+
+		setForcedUpgrade();
 
 		SQLiteDatabase db = getReadableDatabase();
 
