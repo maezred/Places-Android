@@ -10,9 +10,20 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 	private static final String TAG = "MainActivity";
+
+	List<String> placeNames = new ArrayList<>();
+
+	private ArrayAdapter<String> placesAdapter;
+	private ListView             placesListView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+
+		createViewReferences();
+		populatePlacesListView();
 
 		handleIntent(getIntent());
 	}
@@ -54,10 +68,43 @@ public class MainActivity extends AppCompatActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void createViewReferences() {
+		placesListView = (ListView) findViewById(R.id.main_places_list);
+	}
+
+	private void populatePlacesListView() {
+		Map<Integer, Place> places        = PlacesQueryHelper.getInstance(this).getPlaces();
+		List<String>        newPlaceNames = new ArrayList<>();
+
+		for (Place place : places.values()) {
+			newPlaceNames.add(place.getName());
+		}
+
+		placeNames.clear();
+		placeNames.addAll(newPlaceNames);
+
+		placesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, placeNames);
+		placesListView.setAdapter(placesAdapter);
+	}
+
 	private void handleIntent(Intent intent) {
 		if (intent.getAction().equals(Intent.ACTION_SEARCH)) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
-			Log.i(TAG, "handleIntent: Performing search for \"" + query + "\"");
+			Log.i(TAG, "handleIntent: Performing search for \"" + query + "\".");
+
+			Map<Integer, Place> places = PlacesQueryHelper.getInstance(this).searchPlaces(query);
+			List<String> newPlaceNames = new ArrayList<>();
+
+			for (Place place : places.values()) {
+				newPlaceNames.add(place.getName());
+			}
+
+			placeNames.clear();
+			placeNames.addAll(newPlaceNames);
+
+			placesAdapter.notifyDataSetChanged();
+
+			Log.i(TAG, "handleIntent: Found " + placeNames.size() + " results.");
 		}
 	}
 }
