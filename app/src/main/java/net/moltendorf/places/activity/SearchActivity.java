@@ -60,6 +60,7 @@ public class SearchActivity extends AppCompatActivity {
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		SearchView    searchView    = (SearchView) menu.findItem(R.id.action_search).getActionView();
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+		searchView.setQueryHint(getResources().getString(R.string.action_search_hint));
 
 		return true;
 	}
