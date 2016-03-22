@@ -1,4 +1,4 @@
-package net.moltendorf.places;
+package net.moltendorf.places.activity;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import net.moltendorf.places.R;
 
 /**
  * Main screen; displays information about the overall location.

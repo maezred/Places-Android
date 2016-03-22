@@ -1,4 +1,4 @@
-package net.moltendorf.places;
+package net.moltendorf.places.activity;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -12,6 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import net.moltendorf.places.Place;
+import net.moltendorf.places.PlacesQueryHelper;
+import net.moltendorf.places.R;
 
 import java.util.ArrayList;
 import java.util.List;
