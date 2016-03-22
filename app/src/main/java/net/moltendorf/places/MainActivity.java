@@ -9,6 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * Main screen; displays information about the overall location.
+ */
 public class MainActivity extends AppCompatActivity {
 	private static final String TAG = "MainActivity";
 

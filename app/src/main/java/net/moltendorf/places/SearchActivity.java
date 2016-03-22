@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Search screen; displays results from a query entered anywhere in the application.
+ */
 public class SearchActivity extends AppCompatActivity {
 	private static final String TAG = "SearchActivity";
 
