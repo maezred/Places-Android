@@ -33,9 +33,15 @@ public class SearchActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 
 		createViewReferences();
-		populatePlacesListView();
+		createPlacesAdapter();
 
-		handleIntent(getIntent());
+		Intent intent = getIntent();
+
+		handleIntent(intent);
+
+		if (!intent.getAction().equals(Intent.ACTION_SEARCH)) {
+			populatePlacesListView();
+		}
 	}
 
 	@Override
@@ -72,6 +78,11 @@ public class SearchActivity extends AppCompatActivity {
 		placesListView = (ListView) findViewById(R.id.search_places_list);
 	}
 
+	private void createPlacesAdapter() {
+		placesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, placeNames);
+		placesListView.setAdapter(placesAdapter);
+	}
+
 	private void populatePlacesListView() {
 		Map<Integer, Place> places        = PlacesQueryHelper.getInstance(this).getPlaces();
 		List<String>        newPlaceNames = new ArrayList<>();
@@ -83,8 +94,7 @@ public class SearchActivity extends AppCompatActivity {
 		placeNames.clear();
 		placeNames.addAll(newPlaceNames);
 
-		placesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, placeNames);
-		placesListView.setAdapter(placesAdapter);
+		placesAdapter.notifyDataSetChanged();
 	}
 
 	private void handleIntent(Intent intent) {
