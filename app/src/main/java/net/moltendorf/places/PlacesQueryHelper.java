@@ -3,10 +3,12 @@ package net.moltendorf.places;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -45,16 +47,14 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		"ORDER BY " + COL_TAGS_NAME;
 
 	private static final String SQL_SEARCH_PLACES_BY_NAME_OR_TAG = "SELECT " +
-		"p." + COL_PLACES_ID + " " +
+		"p." + COL_PLACES_ID + " AS " + COL_PLACES_ID + ", p." + COL_PLACES_NAME + " " +
 		"FROM " + TBL_PLACES + " p, " + TBL_TAGS + " t, " + TBL_PLACETAGS + " pt, " + TBL_TAGSPELLINGS + " ts " +
 		"WHERE p." + COL_PLACES_ID + " = pt." + COL_PLACES_ID + " " +
 		"AND pt." + COL_TAGS_ID + " = t." + COL_TAGS_ID + " " +
 		"AND t." + COL_TAGS_ID + " = ts." + COL_TAGS_ID + " " +
 		"AND (p." + COL_PLACES_NAME + " LIKE ? " +
 		"OR t." + COL_TAGS_NAME + " LIKE ? " +
-		"OR ts." + COL_TAGSPELLINGS_SPELLING + " LIKE ?) " +
-		"GROUP BY p." + COL_PLACES_ID + " " +
-		"ORDER BY p." + COL_PLACES_NAME;
+		"OR ts." + COL_TAGSPELLINGS_SPELLING + " LIKE ?)";
 
 	private static PlacesQueryHelper instance;
 
@@ -124,16 +124,32 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 	}
 
 	public Map<Integer, Place> searchPlaces(String query) {
-		query = "%" + query + "%";
+		query = query.replaceAll("(?:\\r|\\r?\\n)+", " ").replaceAll("(?:\\s{2,})", " ").trim();
+
+		String[] searchTerms = query.split(" ");
+
+		for (int i = 0; i < searchTerms.length; ++i) {
+			searchTerms[i] = "%" + searchTerms[i] + "%";
+		}
+
+		String[] searchArray = new String[searchTerms.length * 3];
+
+		for (int i = 0; i < searchTerms.length; ++i) {
+			int j = i * 3;
+
+			searchArray[j] = searchTerms[i];
+			searchArray[j + 1] = searchTerms[i];
+			searchArray[j + 2] = searchTerms[i];
+		}
+
+		String[] SQLArray = new String[searchTerms.length];
+		Arrays.fill(SQLArray, SQL_SEARCH_PLACES_BY_NAME_OR_TAG);
+		String SQLQuery = TextUtils.join(" INTERSECT ", SQLArray) + " " +
+			"ORDER BY p." + COL_PLACES_NAME;
 
 		SQLiteDatabase db = getReadableDatabase();
 
-		Cursor cursor = db.rawQuery(SQL_SEARCH_PLACES_BY_NAME_OR_TAG, new String[]{
-			query,
-			query,
-			query
-		});
-
+		Cursor cursor = db.rawQuery(SQLQuery, searchArray);
 		cursor.moveToFirst();
 
 		Map<Integer, Place> foundPlaces = new LinkedHashMap<>();
