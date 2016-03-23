@@ -18,7 +18,7 @@ public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 	}
 
 	@Override
-	public void bindTo(Object object) {
+	public void bindTo(Object object, int position) {
 		// Set place's name.
 		((TextView) itemView.findViewById(R.id.place_name)).setText(((Place) object).getName());
 	}

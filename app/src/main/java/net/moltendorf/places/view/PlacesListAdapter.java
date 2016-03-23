@@ -62,7 +62,7 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
-		holder.bindTo(objects.values().toArray()[position]);
+		holder.bindTo(objects.values().toArray()[position], position);
 	}
 
 	@Override
@@ -75,6 +75,6 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 			super(LayoutInflater.from(context).inflate(R.layout.item_place, viewGroup, false));
 		}
 
-		abstract public void bindTo(Object object);
+		abstract public void bindTo(Object object, int position);
 	}
 }
