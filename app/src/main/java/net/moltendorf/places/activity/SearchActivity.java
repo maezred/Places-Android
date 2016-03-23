@@ -35,6 +35,9 @@ public class SearchActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		Log.d(TAG, "onCreate: Called.");
+
 		setContentView(R.layout.activity_search);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);

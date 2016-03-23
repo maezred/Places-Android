@@ -101,6 +101,8 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 	private PlacesQueryHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 
+		Log.d(TAG, "PlacesQueryHelper: Called.");
+
 		// Upgrade database via overwrite.
 		setForcedUpgrade();
 
