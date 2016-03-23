@@ -70,7 +70,7 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 		return objects.size();
 	}
 
-	abstract public static class ViewHolder extends RecyclerView.ViewHolder {
+	public static abstract class ViewHolder extends RecyclerView.ViewHolder {
 		public ViewHolder(Context context, ViewGroup viewGroup) {
 			super(LayoutInflater.from(context).inflate(R.layout.item_place, viewGroup, false));
 		}
