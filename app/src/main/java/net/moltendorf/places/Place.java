@@ -4,9 +4,6 @@ import android.util.Log;
 
 import java.util.Map;
 
-/**
- * Created by moltendorf on 16/3/21.
- */
 public class Place {
 	private static final String TAG = "Place";
 

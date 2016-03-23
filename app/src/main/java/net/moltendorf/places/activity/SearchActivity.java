@@ -3,22 +3,24 @@ package net.moltendorf.places.activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import net.moltendorf.places.Place;
 import net.moltendorf.places.PlacesQueryHelper;
 import net.moltendorf.places.R;
+import net.moltendorf.places.view.PlaceViewHolder;
+import net.moltendorf.places.view.PlacesListAdapter;
+import net.moltendorf.places.view.PlacesListView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -27,10 +29,10 @@ import java.util.Map;
 public class SearchActivity extends AppCompatActivity {
 	private static final String TAG = "SearchActivity";
 
-	List<String> placeNames = new ArrayList<>();
+	Map<Integer, Place> placeNames = new LinkedHashMap<>();
 
-	private ArrayAdapter<String> placesAdapter;
-	private ListView             placesListView;
+	private PlacesListAdapter placesAdapter;
+	private PlacesListView    placesListView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,24 +88,25 @@ public class SearchActivity extends AppCompatActivity {
 	}
 
 	private void createViewReferences() {
-		placesListView = (ListView) findViewById(R.id.search_places_list);
+		placesListView = (PlacesListView) findViewById(R.id.search_places_list);
+		placesListView.setLayoutManager(new LinearLayoutManager(this));
 	}
 
 	private void createPlacesAdapter() {
-		placesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, placeNames);
+		Map<Class<?>, Class<? extends PlacesListAdapter.ViewHolder>> relations;
+		relations = new HashMap<Class<?>, Class<? extends PlacesListAdapter.ViewHolder>>(1) {{
+			put(Place.class, PlaceViewHolder.class);
+		}};
+
+		placesAdapter = new PlacesListAdapter(this, relations, placeNames);
 		placesListView.setAdapter(placesAdapter);
 	}
 
 	private void populatePlacesListView() {
-		Map<Integer, Place> places        = PlacesQueryHelper.getInstance(this).getPlaces();
-		List<String>        newPlaceNames = new ArrayList<>();
-
-		for (Place place : places.values()) {
-			newPlaceNames.add(place.getName());
-		}
+		Map<Integer, Place> newPlaceNames = PlacesQueryHelper.getInstance(this).getPlaces();
 
 		placeNames.clear();
-		placeNames.addAll(newPlaceNames);
+		placeNames.putAll(newPlaceNames);
 
 		placesAdapter.notifyDataSetChanged();
 	}
@@ -113,15 +116,10 @@ public class SearchActivity extends AppCompatActivity {
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			Log.i(TAG, "handleIntent: Performing search for \"" + query + "\".");
 
-			Map<Integer, Place> places = PlacesQueryHelper.getInstance(this).searchPlaces(query);
-			List<String> newPlaceNames = new ArrayList<>();
-
-			for (Place place : places.values()) {
-				newPlaceNames.add(place.getName());
-			}
+			Map<Integer, Place> newPlaceNames = PlacesQueryHelper.getInstance(this).searchPlaces(query);
 
 			placeNames.clear();
-			placeNames.addAll(newPlaceNames);
+			placeNames.putAll(newPlaceNames);
 
 			placesAdapter.notifyDataSetChanged();
 
