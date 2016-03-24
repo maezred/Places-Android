@@ -30,8 +30,10 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 
 	// Places table columns.
 	private static final String
-		COL_PLACES_ID   = "place_id", // Also used in placetags table.
-		COL_PLACES_NAME = "place_name";
+		COL_PLACES_ID          = "place_id", // Also used in placetags table.
+		COL_PLACES_NAME        = "place_name",
+		COL_PLACES_PHONE       = "place_phone",
+		COL_PLACES_IS_FAVORITE = "place_is_favorite";
 
 	// Tags table columns.
 	private static final String
