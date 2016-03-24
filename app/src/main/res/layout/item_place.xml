@@ -41,6 +41,7 @@
 	<CheckBox
 		android:id="@+id/place_favorite"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
+		android:layout_height="wrap_content"
+		android:button="@android:drawable/btn_star"/>
 
 </net.moltendorf.places.view.PlaceItemLayout>
