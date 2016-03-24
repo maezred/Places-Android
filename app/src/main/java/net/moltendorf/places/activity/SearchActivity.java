@@ -65,6 +65,16 @@ public class SearchActivity extends BaseActivity {
 		}};
 
 		placesAdapter = new PlacesListAdapter(this, relations, placeNames);
+		placesAdapter.addEventListener(new PlaceViewHolder.OnOpenDetailsListener() {
+			@Override
+			public void onOpenDetails(Place place) {
+				Intent intent = new Intent(SearchActivity.this, DetailActivity.class);
+				intent.putExtra(DetailActivity.EXTRA_PLACE_ID, place.getId());
+
+				startActivity(intent);
+			}
+		});
+
 		placesListView.setAdapter(placesAdapter);
 	}
 
