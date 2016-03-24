@@ -28,6 +28,8 @@ public class SearchActivity extends BaseActivity {
 	private PlacesListAdapter placesAdapter;
 	private PlacesListView    placesListView;
 
+	private PlacesQueryHelper queryHelper = PlacesQueryHelper.getInstance(this);
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,7 +81,7 @@ public class SearchActivity extends BaseActivity {
 	}
 
 	private void populatePlacesListView() {
-		Map<Integer, Place> newPlaceNames = PlacesQueryHelper.getInstance(this).getPlaces();
+		Map<Integer, Place> newPlaceNames = queryHelper.getPlaces();
 
 		placeNames.clear();
 		placeNames.putAll(newPlaceNames);
@@ -92,7 +94,7 @@ public class SearchActivity extends BaseActivity {
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			Log.i(TAG, "handleIntent: Performing search for \"" + query + "\".");
 
-			Map<Integer, Place> newPlaceNames = PlacesQueryHelper.getInstance(this).searchPlaces(query);
+			Map<Integer, Place> newPlaceNames = queryHelper.searchPlaces(query);
 
 			placeNames.clear();
 			placeNames.putAll(newPlaceNames);
