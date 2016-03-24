@@ -38,6 +38,19 @@
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value=".activity.MainActivity"/>
 		</activity>
+
+		<activity
+			android:name=".activity.DetailActivity"
+			android:label="@string/title_activity_detail"
+			android:parentActivityName=".activity.SearchActivity">
+			<meta-data
+				android:name="android.app.default_searchable"
+				android:value=".activity.SearchActivity"/>
+
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="net.moltendorf.places.activity.SearchActivity"/>
+		</activity>
 	</application>
 
 </manifest>
