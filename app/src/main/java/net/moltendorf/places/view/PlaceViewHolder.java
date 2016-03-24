@@ -12,7 +12,7 @@ public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 	private static final String TAG = "PlaceViewHolder";
 
 	public PlaceViewHolder(Context context, ViewGroup viewGroup) {
-		super(context, viewGroup);
+		super(context, viewGroup, R.layout.item_place);
 
 		Log.d(TAG, "PlaceViewHolder: Called.");
 	}

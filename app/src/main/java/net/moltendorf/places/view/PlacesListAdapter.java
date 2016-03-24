@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import net.moltendorf.places.Place;
-import net.moltendorf.places.R;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -145,8 +144,8 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 	}
 
 	public static abstract class ViewHolder extends RecyclerView.ViewHolder {
-		public ViewHolder(Context context, ViewGroup viewGroup) {
-			super(LayoutInflater.from(context).inflate(R.layout.item_place, viewGroup, false));
+		public ViewHolder(Context context, ViewGroup viewGroup, int resource) {
+			super(LayoutInflater.from(context).inflate(resource, viewGroup, false));
 		}
 
 		abstract public void bindTo(Object object, int position);
