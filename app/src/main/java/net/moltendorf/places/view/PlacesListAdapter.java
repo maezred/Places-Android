@@ -144,8 +144,12 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 	}
 
 	public static abstract class ViewHolder extends RecyclerView.ViewHolder {
+		protected Context context;
+
 		public ViewHolder(Context context, ViewGroup viewGroup, int resource) {
 			super(LayoutInflater.from(context).inflate(resource, viewGroup, false));
+
+			this.context = context;
 		}
 
 		abstract public void bindTo(Object object, int position);
