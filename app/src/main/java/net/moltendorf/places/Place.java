@@ -10,7 +10,7 @@ public class Place {
 	private int    id;
 	private String name;
 
-	private String phone;
+	private String phone, phoneRaw;
 
 	private boolean isFavorite;
 
@@ -22,6 +22,7 @@ public class Place {
 		this.id = id;
 		this.name = name;
 
+		phoneRaw = phone;
 		this.phone = phone == null || phone.length() != 10 ?
 			phone :
 			String.format("(%s) %s-%s", phone.substring(0, 3), phone.substring(3, 6), phone.substring(6));
@@ -40,6 +41,10 @@ public class Place {
 
 	public String getPhone() {
 		return phone;
+	}
+
+	public String getPhoneRaw() {
+		return phoneRaw;
 	}
 
 	public boolean isFavorite() {
