@@ -28,7 +28,12 @@ public class SearchActivity extends BaseActivity {
 	private PlacesListAdapter placesAdapter;
 	private PlacesListView    placesListView;
 
-	private PlacesQueryHelper queryHelper = PlacesQueryHelper.getInstance(this);
+	private PlacesQueryHelper queryHelper;
+
+	@Override
+	protected void onCreateContentView() {
+		setContentView(R.layout.activity_search);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +41,7 @@ public class SearchActivity extends BaseActivity {
 
 		Log.d(TAG, "onCreate: Called.");
 
-		setContentView(R.layout.activity_search);
+		queryHelper = PlacesQueryHelper.getInstance(this);
 
 		createViewReferences();
 		createPlacesAdapter();

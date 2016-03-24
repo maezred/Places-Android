@@ -16,12 +16,15 @@ public class DetailActivity extends BaseActivity {
 	private int placeId;
 
 	@Override
+	protected void onCreateContentView() {
+		setContentView(R.layout.activity_search);
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		Log.d(TAG, "onCreate: Called.");
-
-		setContentView(R.layout.activity_detail);
 
 		handleIntent(getIntent());
 	}

@@ -11,14 +11,18 @@ import android.view.MenuItem;
 
 import net.moltendorf.places.R;
 
-public class BaseActivity extends AppCompatActivity {
+abstract public class BaseActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		onCreateContentView();
+
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 	}
+
+	protected abstract void onCreateContentView();
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

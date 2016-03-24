@@ -12,11 +12,14 @@ public class MainActivity extends BaseActivity {
 	private static final String TAG = "MainActivity";
 
 	@Override
+	protected void onCreateContentView() {
+		setContentView(R.layout.activity_search);
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		Log.d(TAG, "onCreate: Called.");
-
-		setContentView(R.layout.activity_main);
 	}
 }
