@@ -23,6 +23,12 @@ import java.util.Map;
 public class SearchActivity extends BaseActivity {
 	private static final String TAG = "SearchActivity";
 
+	public static final String ACTION_TAG_ID_SEARCH = "net.moltendorf.places.ACTION_TAG_ID_SEARCH";
+
+	public static final String EXTRA_TAG_ID = "tagId";
+
+	private static final int EXTRA_TAG_ID_DEFAULT = -1;
+
 	Map<Integer, Place> placeNames = new LinkedHashMap<>();
 
 	private PlacesListAdapter placesAdapter;
@@ -46,13 +52,7 @@ public class SearchActivity extends BaseActivity {
 		createViewReferences();
 		createPlacesAdapter();
 
-		Intent intent = getIntent();
-
-		handleIntent(intent);
-
-		if (!intent.getAction().equals(Intent.ACTION_SEARCH)) {
-			populatePlacesListView();
-		}
+		handleIntent(getIntent());
 	}
 
 	@Override
@@ -85,28 +85,33 @@ public class SearchActivity extends BaseActivity {
 		placesListView.setAdapter(placesAdapter);
 	}
 
-	private void populatePlacesListView() {
-		Map<Integer, Place> newPlaceNames = queryHelper.getPlaces();
+	private void handleIntent(Intent intent) {
+		switch (intent.getAction()) {
+			case Intent.ACTION_SEARCH:
+				String query = intent.getStringExtra(SearchManager.QUERY);
+				Log.i(TAG, "handleIntent: Performing search for \"" + query + "\".");
 
+				swapAdapterDataSet(queryHelper.searchPlaces(query));
+				break;
+
+			case ACTION_TAG_ID_SEARCH:
+				int tagId = intent.getIntExtra(EXTRA_TAG_ID, EXTRA_TAG_ID_DEFAULT);
+				Log.i(TAG, "handleIntent: Looking up places with tag_id \"" + tagId + "\".");
+
+				swapAdapterDataSet(queryHelper.getPlacesByTagId(tagId));
+				break;
+
+			default:
+				swapAdapterDataSet(queryHelper.getPlaces());
+		}
+
+		Log.i(TAG, "handleIntent: Found " + placeNames.size() + " results.");
+	}
+
+	private void swapAdapterDataSet(Map<Integer, Place> newPlaceNames) {
 		placeNames.clear();
 		placeNames.putAll(newPlaceNames);
 
 		placesAdapter.notifyDataSetChanged();
-	}
-
-	private void handleIntent(Intent intent) {
-		if (intent.getAction().equals(Intent.ACTION_SEARCH)) {
-			String query = intent.getStringExtra(SearchManager.QUERY);
-			Log.i(TAG, "handleIntent: Performing search for \"" + query + "\".");
-
-			Map<Integer, Place> newPlaceNames = queryHelper.searchPlaces(query);
-
-			placeNames.clear();
-			placeNames.putAll(newPlaceNames);
-
-			placesAdapter.notifyDataSetChanged();
-
-			Log.i(TAG, "handleIntent: Found " + placeNames.size() + " results.");
-		}
 	}
 }
