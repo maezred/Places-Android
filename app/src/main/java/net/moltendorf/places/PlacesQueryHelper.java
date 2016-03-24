@@ -48,7 +48,7 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 	 * Fetch all rows' id and name columns from the places table.
 	 */
 	private static final String SQL_GET_ALL_PLACES = "SELECT " +
-		COL_PLACES_ID + ", " + COL_PLACES_NAME + " " +
+		COL_PLACES_ID + ", " + COL_PLACES_NAME + ", " + COL_PLACES_PHONE + ", " + COL_PLACES_IS_FAVORITE + " " +
 		"FROM " + TBL_PLACES + " " +
 		"ORDER BY " + COL_PLACES_NAME;
 
@@ -141,6 +141,8 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 			Place place = new Place(
 				cursor.getInt(cursor.getColumnIndex(COL_PLACES_ID)),
 				cursor.getString(cursor.getColumnIndex(COL_PLACES_NAME)),
+				cursor.getString(cursor.getColumnIndex(COL_PLACES_PHONE)),
+				cursor.getInt(cursor.getColumnIndex(COL_PLACES_IS_FAVORITE)) > 0,
 				tags
 			);
 
