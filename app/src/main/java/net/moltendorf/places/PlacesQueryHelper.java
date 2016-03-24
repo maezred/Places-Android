@@ -53,9 +53,19 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		"ORDER BY " + COL_PLACES_NAME;
 
 	/**
+	 * Fetch all rows' id and name columns from the places table that have a tag.
+	 */
+	private static final String SQL_GET_ALL_PLACES_BY_TAG_ID = "SELECT " +
+		"p." + COL_PLACES_ID + ", p." + COL_PLACES_NAME + " " +
+		"FROM " + TBL_PLACES + " p, " + TBL_PLACETAGS + " pt " +
+		"WHERE p." + COL_PLACES_ID + " = pt." + COL_PLACES_ID + " " +
+		"AND pt." + COL_TAGS_ID + " = ? " +
+		"ORDER BY " + COL_PLACES_NAME;
+
+	/**
 	 * Fetch all tags' id and name columns from the tags table that are attached to a place.
 	 */
-	private static final String SQL_GET_ALL_TAGS_BY_PLACES_ID = "SELECT " +
+	private static final String SQL_GET_ALL_TAGS_BY_PLACE_ID = "SELECT " +
 		"t." + COL_TAGS_ID + ", t." + COL_TAGS_NAME + " " +
 		"FROM " + TBL_TAGS + " t, " + TBL_PLACETAGS + " pt " +
 		"WHERE t." + COL_TAGS_ID + " = pt." + COL_TAGS_ID + " " +
@@ -118,7 +128,7 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 			int id = cursor.getInt(cursor.getColumnIndex(COL_PLACES_ID));
 
 			// Fetch all the tags for this place.
-			Cursor tagCursor = db.rawQuery(SQL_GET_ALL_TAGS_BY_PLACES_ID, new String[]{
+			Cursor tagCursor = db.rawQuery(SQL_GET_ALL_TAGS_BY_PLACE_ID, new String[]{
 				Integer.toString(id)
 			});
 
@@ -167,6 +177,28 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		return places;
 	}
 
+	public Map<Integer, Place> getPlacesByTagId(int tagId) {
+		SQLiteDatabase db = getReadableDatabase();
+
+		Cursor cursor = db.rawQuery(SQL_GET_ALL_PLACES_BY_TAG_ID, new String[]{
+			Integer.toString(tagId)
+		});
+
+		Map<Integer, Place> foundPlaces = createPlacesMapFromCursor(cursor);
+
+		cursor.close();
+
+		return foundPlaces;
+	}
+
+	/**
+	 * @param placeId Place to fetch.
+	 * @return Place by key lookup without querying database.
+	 */
+	public Place getPlaceById(int placeId) {
+		return places.get(placeId);
+	}
+
 	/**
 	 * @param query Search query.
 	 * @return Map containing all places found.
@@ -206,9 +238,18 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		SQLiteDatabase db = getReadableDatabase();
 
 		Cursor cursor = db.rawQuery(SQLQuery, searchArray);
-		cursor.moveToFirst();
 
-		Map<Integer, Place> foundPlaces = new LinkedHashMap<>();
+		Map<Integer, Place> foundPlaces = createPlacesMapFromCursor(cursor);
+
+		cursor.close();
+
+		return foundPlaces;
+	}
+
+	private Map<Integer, Place> createPlacesMapFromCursor(Cursor cursor) {
+		Map<Integer, Place> foundPlaces = new LinkedHashMap<>(cursor.getCount());
+
+		cursor.moveToFirst();
 
 		while (!cursor.isAfterLast()) {
 			int id = cursor.getInt(cursor.getColumnIndex(COL_PLACES_ID));
@@ -221,8 +262,6 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 
 			cursor.moveToNext();
 		}
-
-		cursor.close();
 
 		return foundPlaces;
 	}
