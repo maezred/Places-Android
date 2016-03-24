@@ -75,7 +75,7 @@ public class SearchActivity extends BaseActivity {
 		placesAdapter.addEventListener(new PlaceViewHolder.OnOpenDetailsListener() {
 			@Override
 			public void onOpenDetails(Place place) {
-				Intent intent = new Intent(SearchActivity.this, DetailActivity.class);
+				Intent intent = new Intent(DetailActivity.ACTION_SHOW_PLACE_BY_ID);
 				intent.putExtra(DetailActivity.EXTRA_PLACE_ID, place.getId());
 
 				startActivity(intent);
