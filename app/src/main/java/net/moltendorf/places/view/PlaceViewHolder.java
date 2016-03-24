@@ -1,14 +1,9 @@
 package net.moltendorf.places.view;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
-import android.os.Build;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -18,14 +13,18 @@ import android.widget.TextView;
 import net.moltendorf.places.Place;
 import net.moltendorf.places.R;
 
-import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 	private static final String TAG = "PlaceViewHolder";
+
+	private static ViewPool<TextView> tagPool;
+
+	private List<TextView> tagsInUse = new LinkedList<>();
 
 	private Place place;
 
@@ -33,11 +32,12 @@ public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 	private Set<OnFavoriteChangeListener> onFavoriteChangeListeners = new LinkedHashSet<>();
 	private Set<OnPhoneClickListener>     onPhoneClickListeners     = new LinkedHashSet<>();
 
-	private int            tagViewPoolIndex = -1;
-	private List<TextView> tagViewPool      = new ArrayList<>();
-
 	public PlaceViewHolder(Context context, ViewGroup viewGroup) {
 		super(context, viewGroup, R.layout.item_place);
+
+		if (tagPool == null) {
+			tagPool = new ViewPool<>(context, R.layout.tag, LinearLayout.class);
+		}
 
 		itemView.findViewById(R.id.place_details).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -77,7 +77,9 @@ public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 		LinearLayout tagsLayout       = (LinearLayout) itemView.findViewById(R.id.place_tags);
 
 		// Clear existing content.
-		resetTagsLayout();
+		tagsLayout.removeAllViewsInLayout();
+		tagPool.returnViews(tagsInUse);
+		tagsInUse.clear();
 
 		// Populate views.
 		nameView.setText(place.getName());
@@ -95,9 +97,10 @@ public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 		phoneView.setTextColor(context.getResources().getColor(phoneColor));
 
 		for (String tag : place.getTags().values()) {
-			TextView tagView = getTagView();
+			TextView tagView = tagPool.getView();
 			tagView.setText(tag);
 
+			tagsInUse.add(tagView);
 			tagsLayout.addView(tagView);
 		}
 	}
@@ -160,48 +163,6 @@ public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 		}
 
 		return !onPhoneClickListeners.isEmpty();
-	}
-
-	private void resetTagsLayout() {
-		((LinearLayout) itemView.findViewById(R.id.place_tags)).removeAllViewsInLayout();
-
-		tagViewPoolIndex = -1;
-	}
-
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-	private TextView getTagView() {
-		++tagViewPoolIndex;
-
-		if (tagViewPoolIndex == tagViewPool.size()) {
-			TextView textView = new TextView(context);
-
-			Resources resources = context.getResources();
-			DisplayMetrics metrics = resources.getDisplayMetrics();
-			int marginPixels = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, metrics);
-
-			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-				ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT
-			);
-
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-				layoutParams.setMarginStart(marginPixels / 2);
-				layoutParams.setMarginEnd(marginPixels / 2);
-			} else {
-				layoutParams.setMargins(marginPixels, 0, marginPixels, 0);
-			}
-
-			textView.setTextColor(resources.getColor(R.color.colorDarkGray));
-			textView.setBackgroundColor(resources.getColor(R.color.colorGray));
-			textView.setLayoutParams(layoutParams);
-			textView.setPadding(marginPixels, marginPixels / 2, marginPixels, marginPixels * 2 / 3);
-
-			tagViewPool.add(textView);
-
-			return textView;
-		}
-
-		return tagViewPool.get(tagViewPoolIndex);
 	}
 
 	public static abstract class OnOpenDetailsListener implements EventListener {
