@@ -26,4 +26,8 @@ public class Place {
 	public String getName() {
 		return name;
 	}
+
+	public Map<Integer, String> getTags() {
+		return tags;
+	}
 }
