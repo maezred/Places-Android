@@ -27,6 +27,7 @@ public class DetailActivity extends BaseActivity {
 
 	private TextView placeName, placePhone;
 	private CheckBox     placeFavorite;
+	private TextView     placeDescription;
 	private LinearLayout placeTags;
 
 	private PlacesQueryHelper queryHelper;
@@ -55,6 +56,7 @@ public class DetailActivity extends BaseActivity {
 		placeName = (TextView) findViewById(R.id.detail_place_name);
 		placePhone = (TextView) findViewById(R.id.detail_place_phone);
 		placeFavorite = (CheckBox) findViewById(R.id.detail_place_favorite);
+		placeDescription = (TextView) findViewById(R.id.detail_place_description);
 		placeTags = (LinearLayout) findViewById(R.id.detail_place_tags);
 	}
 
@@ -81,6 +83,7 @@ public class DetailActivity extends BaseActivity {
 		placeName.setText(place.getName());
 		placePhone.setText(place.getPhone());
 		placeFavorite.setChecked(place.isFavorite());
+		placeDescription.setText(place.getDescription());
 
 		placeTags.removeAllViewsInLayout();
 

@@ -17,6 +17,7 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_marginBottom="4dp"
 		android:gravity="center"
 		android:orientation="horizontal">
 
@@ -39,12 +40,20 @@
 		android:id="@+id/detail_place_phone"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginBottom="4dp"
+		android:layout_marginBottom="8dp"
 		android:layout_marginLeft="4dp"
 		android:layout_marginStart="4dp"
 		android:padding="4dp"
 		android:text="@string/placeholder_phone"
 		android:textSize="24sp"/>
+
+	<TextView
+		android:id="@+id/detail_place_description"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="12dp"
+		android:text="@string/placeholder_description"
+		android:textSize="16sp"/>
 
 	<LinearLayout
 		android:id="@+id/detail_place_tags"
