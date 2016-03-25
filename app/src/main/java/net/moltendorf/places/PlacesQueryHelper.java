@@ -21,7 +21,7 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 	private static final String TAG = "PlacesQueryHelper";
 
 	private static final String DB_NAME    = "places_db";
-	private static final int    DB_VERSION = 5;
+	private static final int    DB_VERSION = 6;
 
 	// Tables.
 	private static final String
