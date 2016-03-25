@@ -14,16 +14,19 @@ public class Place {
 
 	private String description;
 
+	private String hours;
+
 	private boolean isFavorite;
 
 	private List<Tag> tags;
 
-	public Place(int id, String name, String phone, String description, boolean isFavorite, List<Tag> tags) {
+	public Place(int id, String name, String phone, String description, String hours, boolean isFavorite, List<Tag> tags) {
 		Log.d(TAG, "Place: Called.");
 
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.hours = hours;
 
 		phoneRaw = phone;
 		this.phone = phone == null || phone.length() != 10 ?
@@ -48,6 +51,10 @@ public class Place {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public String getHours() {
+		return hours;
 	}
 
 	public String getPhoneRaw() {

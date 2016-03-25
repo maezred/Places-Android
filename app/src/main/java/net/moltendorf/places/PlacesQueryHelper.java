@@ -36,6 +36,7 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		COL_PLACES_NAME        = "place_name",
 		COL_PLACES_PHONE       = "place_phone",
 		COL_PLACES_DESCRIPTION = "place_description",
+		COL_PLACES_HOURS       = "place_hours",
 		COL_PLACES_IS_FAVORITE = "place_is_favorite";
 
 	// Tags table columns.
@@ -51,7 +52,7 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 	 * Fetch all rows' id and name columns from the places table.
 	 */
 	private static final String SQL_GET_ALL_PLACES = "SELECT " +
-		COL_PLACES_ID + ", " + COL_PLACES_NAME + ", " + COL_PLACES_PHONE + ", " + COL_PLACES_DESCRIPTION + ", " + COL_PLACES_IS_FAVORITE + " " +
+		COL_PLACES_ID + ", " + COL_PLACES_NAME + ", " + COL_PLACES_PHONE + ", " + COL_PLACES_DESCRIPTION + ", " + COL_PLACES_HOURS + ", " + COL_PLACES_IS_FAVORITE + " " +
 		"FROM " + TBL_PLACES + " " +
 		"ORDER BY " + COL_PLACES_NAME;
 
@@ -324,6 +325,7 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 				cursor.getString(cursor.getColumnIndex(COL_PLACES_NAME)),
 				cursor.getString(cursor.getColumnIndex(COL_PLACES_PHONE)),
 				cursor.getString(cursor.getColumnIndex(COL_PLACES_DESCRIPTION)),
+				cursor.getString(cursor.getColumnIndex(COL_PLACES_HOURS)),
 				cursor.getInt(cursor.getColumnIndex(COL_PLACES_IS_FAVORITE)) > 0,
 				placeTags
 			);
