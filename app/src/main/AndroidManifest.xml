@@ -63,6 +63,15 @@
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="net.moltendorf.places.activity.SearchActivity"/>
 		</activity>
+
+		<activity
+			android:name=".activity.TagsActivity"
+			android:label="@string/title_activity_tags"
+			android:parentActivityName=".activity.MainActivity">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="net.moltendorf.places.activity.MainActivity"/>
+		</activity>
 	</application>
 
 </manifest>
