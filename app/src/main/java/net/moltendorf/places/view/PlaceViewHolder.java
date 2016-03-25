@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -46,6 +47,15 @@ public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 				Log.d(TAG, "onClick: place_details");
 
 				callOnOpenDetails();
+			}
+		});
+
+		((CheckBox) itemView.findViewById(R.id.place_favorite)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				Log.d(TAG, "onCheckedChanged: place_favorite");
+
+				callOnFavoriteChanged(isChecked);
 			}
 		});
 
