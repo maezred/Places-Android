@@ -51,9 +51,32 @@
 		android:id="@+id/detail_place_description"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginBottom="12dp"
+		android:layout_marginBottom="8dp"
 		android:text="@string/placeholder_description"
 		android:textSize="16sp"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="12dp"
+		android:orientation="horizontal">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/detail_hours"
+			android:textSize="16sp"
+			android:textStyle="bold"/>
+
+		<TextView
+			android:id="@+id/detail_place_hours"
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_marginLeft="4dp"
+			android:layout_weight="1"
+			android:text="@string/placeholder_hours"
+			android:textSize="16sp"/>
+	</LinearLayout>
 
 	<LinearLayout
 		android:id="@+id/detail_place_tags"

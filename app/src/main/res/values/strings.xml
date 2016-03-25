@@ -15,4 +15,6 @@
 	<string name="title_activity_tags">All Tags</string>
 	<string name="placeholder_tag">Tag</string>
 	<string name="placeholder_description">Description</string>
+	<string name="detail_hours">Open on: </string>
+	<string name="placeholder_hours">Hours</string>
 </resources>
