@@ -6,9 +6,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import net.moltendorf.places.PlacesQueryHelper;
+import net.moltendorf.places.BaseActivity;
+import net.moltendorf.places.model.QueryHelper;
+import net.moltendorf.places.model.Place;
 import net.moltendorf.places.R;
-import net.moltendorf.places.Tag;
 
 /**
  * Main screen; displays information about the overall location.
@@ -23,7 +24,7 @@ public class MainActivity extends BaseActivity {
 		confectionsButton,
 		allTagsButton;
 
-	private PlacesQueryHelper queryHelper;
+	private QueryHelper queryHelper;
 
 	@Override
 	protected void onCreateContentView() {
@@ -36,7 +37,7 @@ public class MainActivity extends BaseActivity {
 
 		Log.d(TAG, "onCreate: Called.");
 
-		queryHelper = PlacesQueryHelper.getInstance(this);
+		queryHelper = QueryHelper.getInstance(this);
 
 		createViewReferences();
 		createViewListeners();
@@ -65,7 +66,7 @@ public class MainActivity extends BaseActivity {
 		});
 	}
 
-	private void searchButtonListener(Button button, final String action, final String extra, final Tag tag) {
+	private void searchButtonListener(Button button, final String action, final String extra, final Place.Tag tag) {
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

@@ -1,4 +1,4 @@
-package net.moltendorf.places;
+package net.moltendorf.places.model;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -17,8 +17,8 @@ import java.util.Map;
 /**
  * Implementation for places_db queries.
  */
-public class PlacesQueryHelper extends SQLiteAssetHelper {
-	private static final String TAG = "PlacesQueryHelper";
+public class QueryHelper extends SQLiteAssetHelper {
+	private static final String TAG = "QueryHelper";
 
 	private static final String DB_NAME    = "places_db";
 	private static final int    DB_VERSION = 7;
@@ -122,26 +122,26 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		"SET " + COL_PLACES_IS_FAVORITE + " = ? " +
 		"WHERE " + COL_PLACES_ID + " = ?";
 
-	private static PlacesQueryHelper instance;
+	private static QueryHelper instance;
 
 	/**
-	 * Get single instance of PlacesQueryHelper.
+	 * Get single instance of QueryHelper.
 	 *
 	 * @param context Used to create the instance if one does not already exist.
 	 * @return instance
 	 */
-	public static PlacesQueryHelper getInstance(Context context) {
+	public static QueryHelper getInstance(Context context) {
 		if (instance != null) {
 			return instance;
 		}
 
-		return instance = new PlacesQueryHelper(context);
+		return instance = new QueryHelper(context);
 	}
 
 	/**
 	 * Cache of all tags in object form.
 	 */
-	private Map<Integer, Tag> tags;
+	private Map<Integer, Place.Tag> tags;
 
 	/**
 	 * Cache of all places in object form.
@@ -151,10 +151,10 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 	/**
 	 * Constructor
 	 */
-	private PlacesQueryHelper(Context context) {
+	private QueryHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 
-		Log.d(TAG, "PlacesQueryHelper: Called.");
+		Log.d(TAG, "QueryHelper: Called.");
 
 		populateAllTags();
 		populateAllPlaces();
@@ -251,11 +251,11 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		return foundPlaces;
 	}
 
-	public Map<Integer, Tag> getAllTags() {
+	public Map<Integer, Place.Tag> getAllTags() {
 		return tags;
 	}
 
-	public Tag getTagByName(String name) {
+	public Place.Tag getTagByName(String name) {
 		SQLiteDatabase db = getReadableDatabase();
 
 		Cursor cursor = db.rawQuery(SQL_GET_TAG_ID_BY_TAG_NAME, new String[]{name});
@@ -265,7 +265,7 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 			return null;
 		}
 
-		Tag result = tags.get(cursor.getInt(cursor.getColumnIndex(COL_TAGS_ID)));
+		Place.Tag result = tags.get(cursor.getInt(cursor.getColumnIndex(COL_TAGS_ID)));
 
 		cursor.close();
 
@@ -299,7 +299,7 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		tags = new LinkedHashMap<>(cursor.getCount());
 
 		while (!cursor.isAfterLast()) {
-			Tag tag = new Tag(
+			Place.Tag tag = new Place.Tag(
 				cursor.getInt(cursor.getColumnIndex(COL_TAGS_ID)),
 				cursor.getString(cursor.getColumnIndex(COL_TAGS_NAME))
 			);
@@ -333,7 +333,7 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 
 			tagCursor.moveToFirst();
 
-			List<Tag> placeTags = new ArrayList<>(cursor.getCount());
+			List<Place.Tag> placeTags = new ArrayList<>(cursor.getCount());
 
 			// Dump all the tags into a map.
 			while (!tagCursor.isAfterLast()) {

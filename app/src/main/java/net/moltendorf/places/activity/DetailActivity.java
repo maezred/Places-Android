@@ -11,10 +11,10 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import net.moltendorf.places.Place;
-import net.moltendorf.places.PlacesQueryHelper;
+import net.moltendorf.places.BaseActivity;
+import net.moltendorf.places.model.Place;
+import net.moltendorf.places.model.QueryHelper;
 import net.moltendorf.places.R;
-import net.moltendorf.places.Tag;
 
 public class DetailActivity extends BaseActivity {
 	private static final String TAG = "DetailActivity";
@@ -33,7 +33,7 @@ public class DetailActivity extends BaseActivity {
 	private TextView     placeHours;
 	private LinearLayout placeTags;
 
-	private PlacesQueryHelper queryHelper;
+	private QueryHelper queryHelper;
 
 	@Override
 	protected void onCreateContentView() {
@@ -46,7 +46,7 @@ public class DetailActivity extends BaseActivity {
 
 		Log.d(TAG, "onCreate: Called.");
 
-		queryHelper = PlacesQueryHelper.getInstance(this);
+		queryHelper = QueryHelper.getInstance(this);
 
 		createViewReferences();
 		createViewListeners();
@@ -114,7 +114,7 @@ public class DetailActivity extends BaseActivity {
 
 		placeTags.removeAllViewsInLayout();
 
-		for (final Tag tag : place.getTags()) {
+		for (final Place.Tag tag : place.getTags()) {
 			TextView tagView = (TextView) LayoutInflater.from(this).inflate(R.layout.tag, placeTags, false);
 
 			tagView.setText(tag.getName());

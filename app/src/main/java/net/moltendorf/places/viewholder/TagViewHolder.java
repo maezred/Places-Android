@@ -1,19 +1,20 @@
-package net.moltendorf.places.view;
+package net.moltendorf.places.viewholder;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import net.moltendorf.places.PlacesListAdapter;
 import net.moltendorf.places.R;
-import net.moltendorf.places.Tag;
+import net.moltendorf.places.model.Place;
 
 import java.util.EventListener;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class TagViewHolder extends PlacesListAdapter.ViewHolder {
-	private Tag tag;
+	private Place.Tag tag;
 
 	private Set<OnTagClickListener> onTagClickListeners = new LinkedHashSet<>();
 
@@ -30,7 +31,7 @@ public class TagViewHolder extends PlacesListAdapter.ViewHolder {
 
 	@Override
 	public void bindTo(Object object, int position) {
-		tag = (Tag) object;
+		tag = (Place.Tag) object;
 
 		((TextView) itemView).setText(tag.getName());
 	}
@@ -52,6 +53,6 @@ public class TagViewHolder extends PlacesListAdapter.ViewHolder {
 	}
 
 	public static abstract class OnTagClickListener implements EventListener {
-		abstract public void onTagClicked(Tag tag);
+		abstract public void onTagClicked(Place.Tag tag);
 	}
 }

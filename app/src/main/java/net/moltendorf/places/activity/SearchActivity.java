@@ -4,14 +4,15 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import net.moltendorf.places.Place;
-import net.moltendorf.places.PlacesQueryHelper;
+import net.moltendorf.places.BaseActivity;
+import net.moltendorf.places.PlacesListAdapter;
 import net.moltendorf.places.R;
-import net.moltendorf.places.view.PlaceViewHolder;
-import net.moltendorf.places.view.PlacesListAdapter;
-import net.moltendorf.places.view.PlacesListView;
+import net.moltendorf.places.model.Place;
+import net.moltendorf.places.model.QueryHelper;
+import net.moltendorf.places.viewholder.PlaceViewHolder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,9 +35,9 @@ public class SearchActivity extends BaseActivity {
 	Collection placesAdapterData = new ArrayList<>();
 
 	private PlacesListAdapter placesAdapter;
-	private PlacesListView    placesListView;
+	private RecyclerView      placesListView;
 
-	private PlacesQueryHelper queryHelper;
+	private QueryHelper queryHelper;
 
 	@Override
 	protected void onCreateContentView() {
@@ -49,7 +50,7 @@ public class SearchActivity extends BaseActivity {
 
 		Log.d(TAG, "onCreate: Called.");
 
-		queryHelper = PlacesQueryHelper.getInstance(this);
+		queryHelper = QueryHelper.getInstance(this);
 
 		createViewReferences();
 		createPlacesAdapter();
@@ -63,7 +64,7 @@ public class SearchActivity extends BaseActivity {
 	}
 
 	private void createViewReferences() {
-		placesListView = (PlacesListView) findViewById(R.id.search_places_list);
+		placesListView = (RecyclerView) findViewById(R.id.search_places_list);
 		placesListView.setLayoutManager(new LinearLayoutManager(this));
 	}
 

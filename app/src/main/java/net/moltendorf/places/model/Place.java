@@ -1,4 +1,4 @@
-package net.moltendorf.places;
+package net.moltendorf.places.model;
 
 import android.util.Log;
 
@@ -71,5 +71,23 @@ public class Place {
 
 	public List<Tag> getTags() {
 		return tags;
+	}
+
+	public static class Tag {
+		int    id;
+		String name;
+
+		public Tag(int id, String name) {
+			this.id = id;
+			this.name = name;
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public String getName() {
+			return name;
+		}
 	}
 }

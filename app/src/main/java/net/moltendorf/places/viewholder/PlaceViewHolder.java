@@ -1,4 +1,4 @@
-package net.moltendorf.places.view;
+package net.moltendorf.places.viewholder;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +11,10 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import net.moltendorf.places.Place;
+import net.moltendorf.places.PlacesListAdapter;
+import net.moltendorf.places.model.Place;
 import net.moltendorf.places.R;
-import net.moltendorf.places.Tag;
+import net.moltendorf.places.ViewPool;
 
 import java.util.EventListener;
 import java.util.LinkedHashSet;
@@ -107,7 +108,7 @@ public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 		phoneView.setText(phone);
 		phoneView.setTextColor(context.getResources().getColor(phoneColor));
 
-		for (Tag tag : place.getTags()) {
+		for (Place.Tag tag : place.getTags()) {
 			TextView tagView = tagPool.getView();
 			tagView.setText(tag.getName());
 

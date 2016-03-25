@@ -1,4 +1,4 @@
-package net.moltendorf.places.activity;
+package net.moltendorf.places;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -8,8 +8,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import net.moltendorf.places.R;
 
 abstract public class BaseActivity extends AppCompatActivity {
 	@Override

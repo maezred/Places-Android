@@ -1,4 +1,4 @@
-package net.moltendorf.places.view;
+package net.moltendorf.places;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
