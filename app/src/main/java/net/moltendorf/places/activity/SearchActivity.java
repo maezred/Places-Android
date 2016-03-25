@@ -21,11 +21,11 @@ import java.util.Map;
 
 /**
  * Search Screen
- *
+ * <p/>
  * Displays results from a passed in search.
- *  - Advanced tag search (default).
- *  - Specific tag (id) search.
- *  - Favorites search.
+ * - Advanced tag search (default).
+ * - Specific tag (id) search.
+ * - Favorites search.
  */
 public class SearchActivity extends BaseActivity {
 	private static final String TAG = "SearchActivity";
@@ -84,10 +84,11 @@ public class SearchActivity extends BaseActivity {
 		placesAdapter.addEventListener(new PlaceViewHolder.OnOpenDetailsListener() {
 			@Override
 			public void onOpenDetails(Place place) {
-				Intent intent = new Intent(DetailActivity.ACTION_SHOW_PLACE_BY_ID);
-				intent.putExtra(DetailActivity.EXTRA_PLACE_ID, place.getId());
+				Intent searchIntent = new Intent(SearchActivity.this, DetailActivity.class);
+				searchIntent.setAction(DetailActivity.ACTION_SHOW_PLACE_BY_ID);
+				searchIntent.putExtra(DetailActivity.EXTRA_PLACE_ID, place.getId());
 
-				startActivity(intent);
+				startActivity(searchIntent);
 			}
 		});
 

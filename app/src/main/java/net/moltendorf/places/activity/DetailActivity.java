@@ -18,11 +18,11 @@ import net.moltendorf.places.R;
 
 /**
  * Detail Screen
- *
+ * <p/>
  * Displays all details fetched from database about a place.
- *
- *  - Allows phone number to be tapped for calls.
- *  - Allows tags to be tapped to search for all places with that tag.
+ * <p/>
+ * - Allows phone number to be tapped for calls.
+ * - Allows tags to be tapped to search for all places with that tag.
  */
 public class DetailActivity extends BaseActivity {
 	private static final String TAG = "DetailActivity";
@@ -129,10 +129,11 @@ public class DetailActivity extends BaseActivity {
 			tagView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(SearchActivity.ACTION_TAG_ID_SEARCH);
-					intent.putExtra(SearchActivity.EXTRA_TAG_ID, tag.getId());
+					Intent searchIntent = new Intent(DetailActivity.this, SearchActivity.class);
+					searchIntent.setAction(SearchActivity.ACTION_TAG_ID_SEARCH);
+					searchIntent.putExtra(SearchActivity.EXTRA_TAG_ID, tag.getId());
 
-					startActivity(intent);
+					startActivity(searchIntent);
 				}
 			});
 

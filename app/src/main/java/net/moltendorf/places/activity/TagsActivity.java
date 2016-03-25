@@ -18,7 +18,7 @@ import java.util.Map;
 
 /**
  * Tags Screen
- *
+ * <p/>
  * Displays all tags available to search with.
  */
 public class TagsActivity extends BaseActivity {
@@ -61,10 +61,11 @@ public class TagsActivity extends BaseActivity {
 		tagsAdapter.addEventListener(new TagViewHolder.OnTagClickListener() {
 			@Override
 			public void onTagClicked(Place.Tag tag) {
-				Intent intent = new Intent(SearchActivity.ACTION_TAG_ID_SEARCH);
-				intent.putExtra(SearchActivity.EXTRA_TAG_ID, tag.getId());
+				Intent searchIntent = new Intent(TagsActivity.this, SearchActivity.class);
+				searchIntent.setAction(SearchActivity.ACTION_TAG_ID_SEARCH);
+				searchIntent.putExtra(SearchActivity.EXTRA_TAG_ID, tag.getId());
 
-				startActivity(intent);
+				startActivity(searchIntent);
 			}
 		});
 

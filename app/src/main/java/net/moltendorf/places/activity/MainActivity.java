@@ -13,7 +13,7 @@ import net.moltendorf.places.R;
 
 /**
  * Main Screen
- *
+ * <p/>
  * Provides an overview of possible searches.
  */
 public class MainActivity extends BaseActivity {
@@ -62,8 +62,8 @@ public class MainActivity extends BaseActivity {
 		allTagsButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this, TagsActivity.class);
-				startActivity(intent);
+				Intent tagsIntent = new Intent(MainActivity.this, TagsActivity.class);
+				startActivity(tagsIntent);
 			}
 		});
 	}
@@ -72,17 +72,17 @@ public class MainActivity extends BaseActivity {
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+				Intent searchIntent = new Intent(MainActivity.this, SearchActivity.class);
 
 				if (action != null) {
-					intent.setAction(action);
+					searchIntent.setAction(action);
 				}
 
 				if (extra != null && tag != null) {
-					intent.putExtra(extra, tag.getId());
+					searchIntent.putExtra(extra, tag.getId());
 				}
 
-				startActivity(intent);
+				startActivity(searchIntent);
 			}
 		});
 	}

@@ -30,12 +30,6 @@
 				<action android:name="android.intent.action.SEARCH"/>
 			</intent-filter>
 
-			<intent-filter>
-				<action android:name="net.moltendorf.places.ACTION_TAG_ID_SEARCH"/>
-
-				<category android:name="android.intent.category.DEFAULT"/>
-			</intent-filter>
-
 			<meta-data
 				android:name="android.app.searchable"
 				android:resource="@xml/searchable"/>
@@ -49,12 +43,6 @@
 			android:name=".activity.DetailActivity"
 			android:label="@string/title_activity_detail"
 			android:parentActivityName=".activity.SearchActivity">
-			<intent-filter>
-				<action android:name="net.moltendorf.places.ACTION_SHOW_PLACE_BY_ID"/>
-
-				<category android:name="android.intent.category.DEFAULT"/>
-			</intent-filter>
-
 			<meta-data
 				android:name="android.app.default_searchable"
 				android:value=".activity.SearchActivity"/>
