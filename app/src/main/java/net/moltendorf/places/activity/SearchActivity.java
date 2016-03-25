@@ -87,29 +87,36 @@ public class SearchActivity extends BaseActivity {
 	}
 
 	private void handleIntent(Intent intent) {
-		switch (intent.getAction()) {
-			case Intent.ACTION_SEARCH:
-				String query = intent.getStringExtra(SearchManager.QUERY);
-				Log.i(TAG, "handleIntent: Performing search for \"" + query + "\".");
+		String action = intent.getAction();
 
-				swapAdapterDataSet(queryHelper.searchPlaces(query));
-				break;
+		action:
+		{
+			if (action != null) {
+				switch (action) {
+					case Intent.ACTION_SEARCH:
+						String query = intent.getStringExtra(SearchManager.QUERY);
+						Log.i(TAG, "handleIntent: Performing search for \"" + query + "\".");
 
-			case ACTION_TAG_ID_SEARCH:
-				int tagId = intent.getIntExtra(EXTRA_TAG_ID, EXTRA_TAG_ID_DEFAULT);
-				Log.i(TAG, "handleIntent: Looking up places with tag_id \"" + tagId + "\".");
+						swapAdapterDataSet(queryHelper.searchPlaces(query));
+						break action;
 
-				swapAdapterDataSet(queryHelper.getPlacesByTagId(tagId));
-				break;
+					case ACTION_TAG_ID_SEARCH:
+						int tagId = intent.getIntExtra(EXTRA_TAG_ID, EXTRA_TAG_ID_DEFAULT);
+						Log.i(TAG, "handleIntent: Looking up places with tag_id \"" + tagId + "\".");
 
-			case ACTION_FAVORITE_SEARCH:
-				Log.i(TAG, "handleIntent: Looking up places that are favorited.");
+						swapAdapterDataSet(queryHelper.getPlacesByTagId(tagId));
+						break action;
 
-				swapAdapterDataSet(queryHelper.getPlacesByFavorite());
-				break;
+					case ACTION_FAVORITE_SEARCH:
+						Log.i(TAG, "handleIntent: Looking up places that are favorited.");
 
-			default:
-				swapAdapterDataSet(queryHelper.getPlaces());
+						swapAdapterDataSet(queryHelper.getPlacesByFavorite());
+						break action;
+				}
+			}
+
+			Log.i(TAG, "handleIntent: Getting all places.");
+			swapAdapterDataSet(queryHelper.getPlaces());
 		}
 
 		Log.i(TAG, "handleIntent: Found " + placeNames.size() + " results.");
