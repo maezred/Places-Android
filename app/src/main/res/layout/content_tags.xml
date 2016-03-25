@@ -14,7 +14,7 @@
 	tools:showIn="@layout/activity_tags">
 
 	<net.moltendorf.places.view.PlacesListView
-		android:id="@+id/search_places_list"
+		android:id="@+id/tags_tag_list"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"/>
 </LinearLayout>
