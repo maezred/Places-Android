@@ -2,7 +2,7 @@ package net.moltendorf.places;
 
 import android.util.Log;
 
-import java.util.Map;
+import java.util.List;
 
 public class Place {
 	private static final String TAG = "Place";
@@ -16,9 +16,9 @@ public class Place {
 
 	private boolean isFavorite;
 
-	private Map<Integer, String> tags;
+	private List<Tag> tags;
 
-	public Place(int id, String name, String phone, String description, boolean isFavorite, Map<Integer, String> tags) {
+	public Place(int id, String name, String phone, String description, boolean isFavorite, List<Tag> tags) {
 		Log.d(TAG, "Place: Called.");
 
 		this.id = id;
@@ -58,7 +58,7 @@ public class Place {
 		return isFavorite;
 	}
 
-	public Map<Integer, String> getTags() {
+	public List<Tag> getTags() {
 		return tags;
 	}
 }

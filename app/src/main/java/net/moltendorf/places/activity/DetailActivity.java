@@ -12,8 +12,7 @@ import android.widget.TextView;
 import net.moltendorf.places.Place;
 import net.moltendorf.places.PlacesQueryHelper;
 import net.moltendorf.places.R;
-
-import java.util.Map;
+import net.moltendorf.places.Tag;
 
 public class DetailActivity extends BaseActivity {
 	private static final String TAG = "DetailActivity";
@@ -85,21 +84,21 @@ public class DetailActivity extends BaseActivity {
 
 		placeTags.removeAllViewsInLayout();
 
-		for (final Map.Entry<Integer, String> entry : place.getTags().entrySet()) {
-			TextView tag = (TextView) LayoutInflater.from(this).inflate(R.layout.tag, placeTags, false);
+		for (final Tag tag : place.getTags()) {
+			TextView tagView = (TextView) LayoutInflater.from(this).inflate(R.layout.tag, placeTags, false);
 
-			tag.setText(entry.getValue());
-			tag.setOnClickListener(new View.OnClickListener() {
+			tagView.setText(tag.getName());
+			tagView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(SearchActivity.ACTION_TAG_ID_SEARCH);
-					intent.putExtra(SearchActivity.EXTRA_TAG_ID, entry.getKey());
+					intent.putExtra(SearchActivity.EXTRA_TAG_ID, tag.getId());
 
 					startActivity(intent);
 				}
 			});
 
-			placeTags.addView(tag);
+			placeTags.addView(tagView);
 		}
 	}
 }

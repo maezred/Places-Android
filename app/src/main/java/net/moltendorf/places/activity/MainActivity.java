@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import net.moltendorf.places.PlacesQueryHelper;
 import net.moltendorf.places.R;
+import net.moltendorf.places.Tag;
 
 /**
  * Main screen; displays information about the overall location.
@@ -52,8 +53,8 @@ public class MainActivity extends BaseActivity {
 	private void createViewListeners() {
 		searchButtonListener(allPlacesButton, null, null, null);
 		searchButtonListener(myFavoritesButton, SearchActivity.ACTION_FAVORITE_SEARCH, null, null);
-		searchButtonListener(dineInButton, SearchActivity.ACTION_TAG_ID_SEARCH, SearchActivity.EXTRA_TAG_ID, queryHelper.getTagIdByName("dining"));
-		searchButtonListener(confectionsButton, SearchActivity.ACTION_TAG_ID_SEARCH, SearchActivity.EXTRA_TAG_ID, queryHelper.getTagIdByName("confections"));
+		searchButtonListener(dineInButton, SearchActivity.ACTION_TAG_ID_SEARCH, SearchActivity.EXTRA_TAG_ID, queryHelper.getTagByName("dining"));
+		searchButtonListener(confectionsButton, SearchActivity.ACTION_TAG_ID_SEARCH, SearchActivity.EXTRA_TAG_ID, queryHelper.getTagByName("confections"));
 
 		allTagsButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -64,7 +65,7 @@ public class MainActivity extends BaseActivity {
 		});
 	}
 
-	private void searchButtonListener(Button button, final String action, final String extra, final Integer value) {
+	private void searchButtonListener(Button button, final String action, final String extra, final Tag tag) {
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -74,8 +75,8 @@ public class MainActivity extends BaseActivity {
 					intent.setAction(action);
 				}
 
-				if (extra != null && value != null) {
-					intent.putExtra(extra, value);
+				if (extra != null && tag != null) {
+					intent.putExtra(extra, tag.getId());
 				}
 
 				startActivity(intent);

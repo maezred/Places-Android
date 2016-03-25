@@ -8,8 +8,10 @@ import android.util.Log;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -77,13 +79,13 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 	private static final String SQL_GET_ALL_TAGS = "SELECT " +
 		COL_TAGS_ID + ", " + COL_TAGS_NAME + " " +
 		"FROM " + TBL_TAGS + " " +
-		"ORDER BY " + COL_PLACES_NAME;
+		"ORDER BY " + COL_TAGS_NAME;
 
 	/**
 	 * Fetch all tags' id and name columns from the tags table that are attached to a place.
 	 */
 	private static final String SQL_GET_ALL_TAGS_BY_PLACE_ID = "SELECT " +
-		"t." + COL_TAGS_ID + ", t." + COL_TAGS_NAME + " " +
+		"t." + COL_TAGS_ID + " " +
 		"FROM " + TBL_TAGS + " t, " + TBL_PLACETAGS + " pt " +
 		"WHERE t." + COL_TAGS_ID + " = pt." + COL_TAGS_ID + " " +
 		"AND pt." + COL_PLACES_ID + " = ? " +
@@ -128,9 +130,14 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 	}
 
 	/**
+	 * Cache of all tags in object form.
+	 */
+	private Map<Integer, Tag> tags;
+
+	/**
 	 * Cache of all places in object form.
 	 */
-	private Map<Integer, Place> places = new LinkedHashMap<>();
+	private Map<Integer, Place> places;
 
 	/**
 	 * Constructor
@@ -143,57 +150,8 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		// Upgrade database via overwrite.
 		setForcedUpgrade();
 
-		SQLiteDatabase db = getReadableDatabase();
-
-		// Fetch all the places.
-		Cursor cursor = db.rawQuery(SQL_GET_ALL_PLACES, null);
-		cursor.moveToFirst();
-
-		while (!cursor.isAfterLast()) {
-			int id = cursor.getInt(cursor.getColumnIndex(COL_PLACES_ID));
-
-			// Fetch all the tags for this place.
-			Cursor tagCursor = db.rawQuery(SQL_GET_ALL_TAGS_BY_PLACE_ID, new String[]{
-				Integer.toString(id)
-			});
-
-			tagCursor.moveToFirst();
-
-			Map<Integer, String> tags = new LinkedHashMap<>();
-
-			// Dump all the tags into a map.
-			while (!tagCursor.isAfterLast()) {
-				tags.put(
-					tagCursor.getInt(tagCursor.getColumnIndex(COL_TAGS_ID)),
-					tagCursor.getString(tagCursor.getColumnIndex(COL_TAGS_NAME)).intern() // Save memory.
-				);
-
-				tagCursor.moveToNext();
-			}
-
-			tagCursor.close();
-
-			Place place = new Place(
-				cursor.getInt(cursor.getColumnIndex(COL_PLACES_ID)),
-				cursor.getString(cursor.getColumnIndex(COL_PLACES_NAME)),
-				cursor.getString(cursor.getColumnIndex(COL_PLACES_PHONE)),
-				cursor.getString(cursor.getColumnIndex(COL_PLACES_DESCRIPTION)),
-				cursor.getInt(cursor.getColumnIndex(COL_PLACES_IS_FAVORITE)) > 0,
-				tags
-			);
-
-			// Put the place into the places map.
-			places.put(
-				place.getId(),
-				place
-			);
-
-			cursor.moveToNext();
-		}
-
-		cursor.close();
-
-		Log.d(TAG, "PlacesQueryHelper: Loaded " + places.size() + " places.");
+		populateAllTags();
+		populateAllPlaces();
 	}
 
 	/**
@@ -287,27 +245,11 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		return foundPlaces;
 	}
 
-	public Map<Integer, String> getAllTags() {
-		SQLiteDatabase db = getReadableDatabase();
-
-		Cursor cursor = db.rawQuery(SQL_GET_ALL_TAGS, null);
-		cursor.moveToFirst();
-
-		Map<Integer, String> tags = new LinkedHashMap<>(cursor.getCount());
-
-		while (!cursor.isAfterLast()) {
-			tags.put(
-				cursor.getInt(cursor.getColumnIndex(COL_TAGS_ID)),
-				cursor.getString(cursor.getColumnIndex(COL_TAGS_NAME)).intern() // Save memory.
-			);
-		}
-
-		cursor.close();
-
+	public Map<Integer, Tag> getAllTags() {
 		return tags;
 	}
 
-	public Integer getTagIdByName(String name) {
+	public Tag getTagByName(String name) {
 		SQLiteDatabase db = getReadableDatabase();
 
 		Cursor cursor = db.rawQuery(SQL_GET_TAG_ID_BY_TAG_NAME, new String[]{name});
@@ -317,11 +259,84 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 			return null;
 		}
 
-		Integer result = cursor.getInt(cursor.getColumnIndex(COL_TAGS_ID));
+		Tag result = tags.get(cursor.getInt(cursor.getColumnIndex(COL_TAGS_ID)));
 
 		cursor.close();
 
 		return result;
+	}
+
+	private void populateAllTags() {
+		SQLiteDatabase db = getReadableDatabase();
+
+		Cursor cursor = db.rawQuery(SQL_GET_ALL_TAGS, null);
+		cursor.moveToFirst();
+
+		tags = new LinkedHashMap<>(cursor.getCount());
+
+		while (!cursor.isAfterLast()) {
+			Tag tag = new Tag(
+				cursor.getInt(cursor.getColumnIndex(COL_TAGS_ID)),
+				cursor.getString(cursor.getColumnIndex(COL_TAGS_NAME))
+			);
+
+			tags.put(tag.getId(), tag);
+
+			cursor.moveToNext();
+		}
+
+		cursor.close();
+
+		Log.i(TAG, "populateAllTags: Loaded " + tags.size() + " tags.");
+	}
+
+	private void populateAllPlaces() {
+		SQLiteDatabase db = getReadableDatabase();
+
+		// Fetch all the places.
+		Cursor cursor = db.rawQuery(SQL_GET_ALL_PLACES, null);
+		cursor.moveToFirst();
+
+		places = new LinkedHashMap<>(cursor.getCount());
+
+		while (!cursor.isAfterLast()) {
+			int id = cursor.getInt(cursor.getColumnIndex(COL_PLACES_ID));
+
+			// Fetch all the tags for this place.
+			Cursor tagCursor = db.rawQuery(SQL_GET_ALL_TAGS_BY_PLACE_ID, new String[]{
+				Integer.toString(id)
+			});
+
+			tagCursor.moveToFirst();
+
+			List<Tag> placeTags = new ArrayList<>(cursor.getCount());
+
+			// Dump all the tags into a map.
+			while (!tagCursor.isAfterLast()) {
+				placeTags.add(tags.get(tagCursor.getInt(tagCursor.getColumnIndex(COL_TAGS_ID))));
+				tagCursor.moveToNext();
+			}
+
+			tagCursor.close();
+
+			Place place = new Place(
+				cursor.getInt(cursor.getColumnIndex(COL_PLACES_ID)),
+				cursor.getString(cursor.getColumnIndex(COL_PLACES_NAME)),
+				cursor.getString(cursor.getColumnIndex(COL_PLACES_PHONE)),
+				cursor.getString(cursor.getColumnIndex(COL_PLACES_DESCRIPTION)),
+				cursor.getInt(cursor.getColumnIndex(COL_PLACES_IS_FAVORITE)) > 0,
+				placeTags
+			);
+
+			// Put the place into the places map.
+			places.put(place.getId(), place);
+
+			cursor.moveToNext();
+		}
+
+		cursor.close();
+
+		Log.i(TAG, "populateAllPlaces: Loaded " + places.size() + " places.");
 	}
 
 	private Map<Integer, Place> createPlacesMapFromCursor(Cursor cursor) {

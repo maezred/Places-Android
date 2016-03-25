@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import net.moltendorf.places.Place;
 import net.moltendorf.places.R;
+import net.moltendorf.places.Tag;
 
 import java.util.EventListener;
 import java.util.LinkedHashSet;
@@ -96,9 +97,9 @@ public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 		phoneView.setText(phone);
 		phoneView.setTextColor(context.getResources().getColor(phoneColor));
 
-		for (String tag : place.getTags().values()) {
+		for (Tag tag : place.getTags()) {
 			TextView tagView = tagPool.getView();
-			tagView.setText(tag);
+			tagView.setText(tag.getName());
 
 			tagsInUse.add(tagView);
 			tagsLayout.addView(tagView);
