@@ -23,7 +23,8 @@ import java.util.Map;
 public class SearchActivity extends BaseActivity {
 	private static final String TAG = "SearchActivity";
 
-	public static final String ACTION_TAG_ID_SEARCH = "net.moltendorf.places.ACTION_TAG_ID_SEARCH";
+	public static final String ACTION_TAG_ID_SEARCH   = "net.moltendorf.places.ACTION_TAG_ID_SEARCH";
+	public static final String ACTION_FAVORITE_SEARCH = "net.moltendorf.places.ACTION_FAVORITE_SEARCH";
 
 	public static final String EXTRA_TAG_ID = "tagId";
 
@@ -99,6 +100,12 @@ public class SearchActivity extends BaseActivity {
 				Log.i(TAG, "handleIntent: Looking up places with tag_id \"" + tagId + "\".");
 
 				swapAdapterDataSet(queryHelper.getPlacesByTagId(tagId));
+				break;
+
+			case ACTION_FAVORITE_SEARCH:
+				Log.i(TAG, "handleIntent: Looking up places that are favorited.");
+
+				swapAdapterDataSet(queryHelper.getPlacesByFavorite());
 				break;
 
 			default:
