@@ -14,17 +14,26 @@
 	tools:context=".activity.DetailActivity"
 	tools:showIn="@layout/activity_detail">
 
-	<TextView
-		android:id="@+id/detail_place_name"
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:textSize="18sp"/>
+		android:gravity="center"
+		android:orientation="horizontal">
 
-	<CheckBox
-		android:id="@+id/detail_place_favorite"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:button="@android:drawable/btn_star"/>
+		<TextView
+			android:id="@+id/detail_place_name"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/placeholder_place"
+			android:textSize="36sp"/>
+
+		<CheckBox
+			android:id="@+id/detail_place_favorite"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:button="@android:drawable/btn_star"/>
+	</LinearLayout>
 
 	<TextView
 		android:id="@+id/detail_place_phone"
@@ -34,7 +43,8 @@
 		android:layout_marginLeft="4dp"
 		android:layout_marginStart="4dp"
 		android:padding="4dp"
-		android:textSize="16sp"/>
+		android:text="@string/placeholder_phone"
+		android:textSize="24sp"/>
 
 	<LinearLayout
 		android:id="@+id/detail_place_tags"

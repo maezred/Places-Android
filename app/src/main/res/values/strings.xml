@@ -4,4 +4,6 @@
 	<string name="action_search_hint">Search for a Place&#8230;</string>
 	<string name="title_activity_search">Search Results</string>
 	<string name="title_activity_detail">Place Details</string>
+	<string name="placeholder_place">Place</string>
+	<string name="placeholder_phone">Phone</string>
 </resources>
