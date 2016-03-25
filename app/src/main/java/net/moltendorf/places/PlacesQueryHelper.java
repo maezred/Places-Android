@@ -72,6 +72,14 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		"WHERE " + COL_PLACES_IS_FAVORITE + " = 1";
 
 	/**
+	 * Fetch all rows' id and name columns from the tags table.
+	 */
+	private static final String SQL_GET_ALL_TAGS = "SELECT " +
+		COL_TAGS_ID + ", " + COL_TAGS_NAME + " " +
+		"FROM " + TBL_TAGS + " " +
+		"ORDER BY " + COL_PLACES_NAME;
+
+	/**
 	 * Fetch all tags' id and name columns from the tags table that are attached to a place.
 	 */
 	private static final String SQL_GET_ALL_TAGS_BY_PLACE_ID = "SELECT " +
@@ -277,6 +285,26 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		cursor.close();
 
 		return foundPlaces;
+	}
+
+	public Map<Integer, String> getAllTags() {
+		SQLiteDatabase db = getReadableDatabase();
+
+		Cursor cursor = db.rawQuery(SQL_GET_ALL_TAGS, null);
+		cursor.moveToFirst();
+
+		Map<Integer, String> tags = new LinkedHashMap<>(cursor.getCount());
+
+		while (!cursor.isAfterLast()) {
+			tags.put(
+				cursor.getInt(cursor.getColumnIndex(COL_TAGS_ID)),
+				cursor.getString(cursor.getColumnIndex(COL_TAGS_NAME)).intern() // Save memory.
+			);
+		}
+
+		cursor.close();
+
+		return tags;
 	}
 
 	public Integer getTagIdByName(String name) {
