@@ -65,6 +65,10 @@ public class Place {
 		return isFavorite;
 	}
 
+	void setIsFavorite(boolean isFavorite) {
+		this.isFavorite = isFavorite;
+	}
+
 	public List<Tag> getTags() {
 		return tags;
 	}

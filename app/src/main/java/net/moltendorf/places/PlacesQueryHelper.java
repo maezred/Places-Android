@@ -114,6 +114,14 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		"FROM " + TBL_TAGS + " " +
 		"WHERE " + COL_TAGS_NAME + " = ?";
 
+	/**
+	 * Update is favorite column in places table that matches the id.
+	 */
+	private static final String SQL_SET_FAVORITE_BY_PLACE_ID = "UPDATE " +
+		TBL_PLACES + " " +
+		"SET " + COL_PLACES_IS_FAVORITE + " = ? " +
+		"WHERE " + COL_PLACES_ID + " = ?";
+
 	private static PlacesQueryHelper instance;
 
 	/**
@@ -147,9 +155,6 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		super(context, DB_NAME, null, DB_VERSION);
 
 		Log.d(TAG, "PlacesQueryHelper: Called.");
-
-		// Upgrade database via overwrite.
-		setForcedUpgrade();
 
 		populateAllTags();
 		populateAllPlaces();
@@ -265,6 +270,22 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		cursor.close();
 
 		return result;
+	}
+
+	public void setPlaceIsFavorite(Place place, boolean isFavorite) {
+		// Update local model.
+		place.setIsFavorite(isFavorite);
+
+		// Update database.
+		SQLiteDatabase db = getWritableDatabase();
+
+		db.execSQL(SQL_SET_FAVORITE_BY_PLACE_ID, new String[]{
+			Integer.toString(place.getId()),
+			isFavorite ? "1" : "0"
+		});
+
+		String status = isFavorite ? " added to " : " removed from ";
+		Log.i(TAG, "setPlaceIsFavorite: Place " + place.getName() + status + "favorites.");
 	}
 
 	private void populateAllTags() {
