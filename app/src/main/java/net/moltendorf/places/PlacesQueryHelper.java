@@ -64,6 +64,14 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		"ORDER BY " + COL_PLACES_NAME;
 
 	/**
+	 * Fetch all rows' id and name columns from the places table that are favorited.
+	 */
+	private static final String SQL_GET_ALL_PLACES_BY_FAVORITE = "SELECT " +
+		COL_PLACES_ID + ", " + COL_PLACES_NAME + " " +
+		"FROM " + TBL_PLACES + " " +
+		"WHERE " + COL_PLACES_IS_FAVORITE + " = 1";
+
+	/**
 	 * Fetch all tags' id and name columns from the tags table that are attached to a place.
 	 */
 	private static final String SQL_GET_ALL_TAGS_BY_PLACE_ID = "SELECT " +
@@ -185,6 +193,18 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		Cursor cursor = db.rawQuery(SQL_GET_ALL_PLACES_BY_TAG_ID, new String[]{
 			Integer.toString(tagId)
 		});
+
+		Map<Integer, Place> foundPlaces = createPlacesMapFromCursor(cursor);
+
+		cursor.close();
+
+		return foundPlaces;
+	}
+
+	public Map<Integer, Place> getPlacesByFavorite() {
+		SQLiteDatabase db = getReadableDatabase();
+
+		Cursor cursor = db.rawQuery(SQL_GET_ALL_PLACES_BY_FAVORITE, null);
 
 		Map<Integer, Place> foundPlaces = createPlacesMapFromCursor(cursor);
 
