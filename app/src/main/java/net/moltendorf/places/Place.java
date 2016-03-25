@@ -12,15 +12,18 @@ public class Place {
 
 	private String phone, phoneRaw;
 
+	private String description;
+
 	private boolean isFavorite;
 
 	private Map<Integer, String> tags;
 
-	public Place(int id, String name, String phone, boolean isFavorite, Map<Integer, String> tags) {
+	public Place(int id, String name, String phone, String description, boolean isFavorite, Map<Integer, String> tags) {
 		Log.d(TAG, "Place: Called.");
 
 		this.id = id;
 		this.name = name;
+		this.description = description;
 
 		phoneRaw = phone;
 		this.phone = phone == null || phone.length() != 10 ?
@@ -41,6 +44,10 @@ public class Place {
 
 	public String getPhone() {
 		return phone;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 	public String getPhoneRaw() {
