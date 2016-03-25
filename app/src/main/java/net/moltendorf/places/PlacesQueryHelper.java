@@ -281,8 +281,8 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 			SQLiteDatabase db = getWritableDatabase();
 
 			db.execSQL(SQL_SET_FAVORITE_BY_PLACE_ID, new String[]{
-				Integer.toString(place.getId()),
-				isFavorite ? "1" : "0"
+				isFavorite ? "1" : "0",
+				Integer.toString(place.getId())
 			});
 
 			String status = isFavorite ? " added to " : " removed from ";
