@@ -1,6 +1,7 @@
 package net.moltendorf.places.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,6 +48,7 @@ public class DetailActivity extends BaseActivity {
 		queryHelper = PlacesQueryHelper.getInstance(this);
 
 		createViewReferences();
+		createViewListeners();
 
 		handleIntent(getIntent());
 
@@ -60,6 +62,20 @@ public class DetailActivity extends BaseActivity {
 		placeDescription = (TextView) findViewById(R.id.detail_place_description);
 		placeHours = (TextView) findViewById(R.id.detail_place_hours);
 		placeTags = (LinearLayout) findViewById(R.id.detail_place_tags);
+	}
+
+	private void createViewListeners() {
+		placePhone.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String phone = place.getPhoneRaw();
+
+				if (phone != null) {
+					Intent callNumber = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
+					startActivity(callNumber);
+				}
+			}
+		});
 	}
 
 	private void handleIntent(Intent intent) {
