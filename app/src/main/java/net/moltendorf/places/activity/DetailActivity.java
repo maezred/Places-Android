@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -74,6 +75,13 @@ public class DetailActivity extends BaseActivity {
 					Intent callNumber = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
 					startActivity(callNumber);
 				}
+			}
+		});
+
+		placeFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				queryHelper.setPlaceIsFavorite(place, isChecked);
 			}
 		});
 	}

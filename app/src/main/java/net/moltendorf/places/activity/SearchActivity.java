@@ -74,6 +74,7 @@ public class SearchActivity extends BaseActivity {
 		}};
 
 		placesAdapter = new PlacesListAdapter(this, relations, placesAdapterData);
+
 		placesAdapter.addEventListener(new PlaceViewHolder.OnOpenDetailsListener() {
 			@Override
 			public void onOpenDetails(Place place) {
@@ -81,6 +82,13 @@ public class SearchActivity extends BaseActivity {
 				intent.putExtra(DetailActivity.EXTRA_PLACE_ID, place.getId());
 
 				startActivity(intent);
+			}
+		});
+
+		placesAdapter.addEventListener(new PlaceViewHolder.OnFavoriteChangeListener() {
+			@Override
+			public void onFavoriteChanged(Place place, boolean isFavorite) {
+				queryHelper.setPlaceIsFavorite(place, isFavorite);
 			}
 		});
 
