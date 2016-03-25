@@ -95,6 +95,14 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		"OR t." + COL_TAGS_NAME + " LIKE ? " +
 		"OR ts." + COL_TAGSPELLINGS_SPELLING + " LIKE ?)";
 
+	/**
+	 * Fetch tag id column from the tags table that matches the id.
+	 */
+	private static final String SQL_GET_TAG_ID_BY_TAG_NAME = "SELECT " +
+		COL_TAGS_ID + " " +
+		"FROM " + TBL_TAGS + " " +
+		"WHERE " + COL_TAGS_NAME + " = ?";
+
 	private static PlacesQueryHelper instance;
 
 	/**
@@ -201,6 +209,9 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		return foundPlaces;
 	}
 
+	/**
+	 * @return Place by favorite lookup.
+	 */
 	public Map<Integer, Place> getPlacesByFavorite() {
 		SQLiteDatabase db = getReadableDatabase();
 
@@ -266,6 +277,23 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 		cursor.close();
 
 		return foundPlaces;
+	}
+
+	public Integer getTagIdByName(String name) {
+		SQLiteDatabase db = getReadableDatabase();
+
+		Cursor cursor = db.rawQuery(SQL_GET_TAG_ID_BY_TAG_NAME, new String[]{name});
+		cursor.moveToFirst();
+
+		if (cursor.isAfterLast()) {
+			return null;
+		}
+
+		Integer result = cursor.getInt(cursor.getColumnIndex(COL_TAGS_ID));
+
+		cursor.close();
+
+		return result;
 	}
 
 	private Map<Integer, Place> createPlacesMapFromCursor(Cursor cursor) {
