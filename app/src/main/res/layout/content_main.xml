@@ -22,26 +22,31 @@
 		android:textSize="36sp"/>
 
 	<Button
+		android:id="@+id/main_all_places"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/main_all_places"/>
 
 	<Button
+		android:id="@+id/main_my_favorites"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/main_my_favorites"/>
 
 	<Button
+		android:id="@+id/main_dine_in"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/main_dine_in"/>
 
 	<Button
+		android:id="@+id/main_confections"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/main_confections"/>
 
 	<Button
+		android:id="@+id/main_all_tags"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/main_all_tags"/>
