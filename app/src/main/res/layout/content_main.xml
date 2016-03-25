@@ -5,6 +5,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:orientation="vertical"
 	android:paddingBottom="@dimen/activity_vertical_margin"
 	android:paddingLeft="@dimen/activity_horizontal_margin"
 	android:paddingRight="@dimen/activity_horizontal_margin"
@@ -13,8 +14,35 @@
 	tools:context=".activity.MainActivity"
 	tools:showIn="@layout/activity_main">
 
-	<ListView
-		android:id="@+id/main_places_list"
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/main_title"
+		android:textAlignment="center"
+		android:textSize="36sp"/>
+
+	<Button
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"/>
+		android:layout_height="wrap_content"
+		android:text="@string/main_all_places"/>
+
+	<Button
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/main_my_favorites"/>
+
+	<Button
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/main_dine_in"/>
+
+	<Button
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/main_confections"/>
+
+	<Button
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/main_all_tags"/>
 </LinearLayout>

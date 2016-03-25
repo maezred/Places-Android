@@ -6,4 +6,10 @@
 	<string name="title_activity_detail">Place Details</string>
 	<string name="placeholder_place">Place</string>
 	<string name="placeholder_phone">Phone</string>
+	<string name="main_all_places">Show All Places</string>
+	<string name="main_my_favorites">Show My Favorites</string>
+	<string name="main_dine_in">Show Dine-In Places</string>
+	<string name="main_confections">Show Confection Places</string>
+	<string name="main_all_tags">Show All Tags</string>
+	<string name="main_title">The Food at Stoneridge Mall</string>
 </resources>
