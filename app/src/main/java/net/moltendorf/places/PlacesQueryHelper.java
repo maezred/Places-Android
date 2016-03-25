@@ -273,19 +273,21 @@ public class PlacesQueryHelper extends SQLiteAssetHelper {
 	}
 
 	public void setPlaceIsFavorite(Place place, boolean isFavorite) {
-		// Update local model.
-		place.setIsFavorite(isFavorite);
+		if (place.isFavorite() != isFavorite) {
+			// Update local model.
+			place.setIsFavorite(isFavorite);
 
-		// Update database.
-		SQLiteDatabase db = getWritableDatabase();
+			// Update database.
+			SQLiteDatabase db = getWritableDatabase();
 
-		db.execSQL(SQL_SET_FAVORITE_BY_PLACE_ID, new String[]{
-			Integer.toString(place.getId()),
-			isFavorite ? "1" : "0"
-		});
+			db.execSQL(SQL_SET_FAVORITE_BY_PLACE_ID, new String[]{
+				Integer.toString(place.getId()),
+				isFavorite ? "1" : "0"
+			});
 
-		String status = isFavorite ? " added to " : " removed from ";
-		Log.i(TAG, "setPlaceIsFavorite: Place " + place.getName() + status + "favorites.");
+			String status = isFavorite ? " added to " : " removed from ";
+			Log.i(TAG, "setPlaceIsFavorite: Place " + place.getName() + status + "favorites.");
+		}
 	}
 
 	private void populateAllTags() {
