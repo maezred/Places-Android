@@ -16,6 +16,14 @@ import net.moltendorf.places.model.Place;
 import net.moltendorf.places.model.QueryHelper;
 import net.moltendorf.places.R;
 
+/**
+ * Detail Screen
+ *
+ * Displays all details fetched from database about a place.
+ *
+ *  - Allows phone number to be tapped for calls.
+ *  - Allows tags to be tapped to search for all places with that tag.
+ */
 public class DetailActivity extends BaseActivity {
 	private static final String TAG = "DetailActivity";
 

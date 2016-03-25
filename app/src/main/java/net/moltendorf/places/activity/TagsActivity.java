@@ -16,6 +16,11 @@ import net.moltendorf.places.viewholder.TagViewHolder;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Tags Screen
+ *
+ * Displays all tags available to search with.
+ */
 public class TagsActivity extends BaseActivity {
 	private static final String TAG = "TagsActivity";
 

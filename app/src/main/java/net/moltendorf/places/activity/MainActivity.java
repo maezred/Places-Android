@@ -12,7 +12,9 @@ import net.moltendorf.places.model.Place;
 import net.moltendorf.places.R;
 
 /**
- * Main screen; displays information about the overall location.
+ * Main Screen
+ *
+ * Provides an overview of possible searches.
  */
 public class MainActivity extends BaseActivity {
 	private static final String TAG = "MainActivity";

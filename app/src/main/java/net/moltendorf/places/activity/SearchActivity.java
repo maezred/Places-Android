@@ -20,7 +20,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Search screen; displays results from a query entered anywhere in the application.
+ * Search Screen
+ *
+ * Displays results from a passed in search.
+ *  - Advanced tag search (default).
+ *  - Specific tag (id) search.
+ *  - Favorites search.
  */
 public class SearchActivity extends BaseActivity {
 	private static final String TAG = "SearchActivity";
