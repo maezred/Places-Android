@@ -54,7 +54,7 @@ public class MainActivity extends BaseActivity {
 		searchButtonListener(allPlacesButton, null, null, null);
 		searchButtonListener(myFavoritesButton, SearchActivity.ACTION_FAVORITE_SEARCH, null, null);
 		searchButtonListener(dineInButton, SearchActivity.ACTION_TAG_ID_SEARCH, SearchActivity.EXTRA_TAG_ID, queryHelper.getTagByName("dining"));
-		searchButtonListener(confectionsButton, SearchActivity.ACTION_TAG_ID_SEARCH, SearchActivity.EXTRA_TAG_ID, queryHelper.getTagByName("confections"));
+		searchButtonListener(confectionsButton, SearchActivity.ACTION_TAG_ID_SEARCH, SearchActivity.EXTRA_TAG_ID, queryHelper.getTagByName("confection"));
 
 		allTagsButton.setOnClickListener(new View.OnClickListener() {
 			@Override
