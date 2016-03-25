@@ -4,6 +4,11 @@ import android.util.Log;
 
 import java.util.List;
 
+/**
+ * Place Data Object
+ * <p/>
+ * Holds cache data from database.
+ */
 public class Place {
 	private static final String TAG = "Place";
 
@@ -73,6 +78,11 @@ public class Place {
 		return tags;
 	}
 
+	/**
+	 * Tag Data Object
+	 * <p/>
+	 * Holds cache data about tags from the database.
+	 */
 	public static class Tag {
 		int    id;
 		String name;

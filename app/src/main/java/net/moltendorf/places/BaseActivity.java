@@ -9,6 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * Base version of all activities. Not an actual screen.
+ * <p/>
+ * - Sets up search bar.
+ */
 abstract public class BaseActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

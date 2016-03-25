@@ -16,6 +16,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * More generic implementation of RecyclerView.
+ * Can be used in various ways with minimal, if any, extension required.
+ */
 public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.ViewHolder> {
 	private static final String TAG = "PlacesListAdapter";
 

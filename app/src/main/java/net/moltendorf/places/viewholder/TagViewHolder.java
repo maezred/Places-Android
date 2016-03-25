@@ -13,6 +13,9 @@ import java.util.EventListener;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/**
+ * View holder for tag rows in the tag activity.
+ */
 public class TagViewHolder extends PlacesListAdapter.ViewHolder {
 	private Place.Tag tag;
 
@@ -52,6 +55,9 @@ public class TagViewHolder extends PlacesListAdapter.ViewHolder {
 		return !onTagClickListeners.isEmpty();
 	}
 
+	/**
+	 * Event listener for when the user taps on a tag.
+	 */
 	public static abstract class OnTagClickListener implements EventListener {
 		abstract public void onTagClicked(Place.Tag tag);
 	}

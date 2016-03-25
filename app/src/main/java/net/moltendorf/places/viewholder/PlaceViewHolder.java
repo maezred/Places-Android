@@ -22,6 +22,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * View holder for place rows in the search activity.
+ */
 public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 	private static final String TAG = "PlaceViewHolder";
 
@@ -177,14 +180,23 @@ public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 		return !onPhoneClickListeners.isEmpty();
 	}
 
+	/**
+	 * Event listener for when the user taps on a place in an ambiguous position.
+	 */
 	public static abstract class OnOpenDetailsListener implements EventListener {
 		abstract public void onOpenDetails(Place place);
 	}
 
+	/**
+	 * Event listener for when the user toggles a place as a favorite.
+	 */
 	public static abstract class OnFavoriteChangeListener implements EventListener {
 		abstract public void onFavoriteChanged(Place place, boolean isFavorite);
 	}
 
+	/**
+	 * Event listener for when the user taps on a phone number.
+	 */
 	public static abstract class OnPhoneClickListener implements EventListener {
 		abstract public boolean onPhoneClicked(Place place);
 	}

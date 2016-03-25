@@ -10,7 +10,9 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 /**
- * Created by moltendorf on 16/3/24.
+ * Provides a simple view recycling implementation that can be easily shared among layouts.
+ *
+ * @param <T> View type.
  */
 public class ViewPool<T> {
 	private static final String TAG = "ViewPool";

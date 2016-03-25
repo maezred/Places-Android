@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Implementation for places_db queries.
+ * Database model.
+ * <p/>
+ * Simplifies queries on the database into single method calls.
  */
 public class QueryHelper extends SQLiteAssetHelper {
 	private static final String TAG = "QueryHelper";
