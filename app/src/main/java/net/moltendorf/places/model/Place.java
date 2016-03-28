@@ -1,5 +1,6 @@
 package net.moltendorf.places.model;
 
+import android.database.Cursor;
 import android.util.Log;
 
 import java.util.List;
@@ -25,20 +26,20 @@ public class Place {
 
 	private List<Tag> tags;
 
-	public Place(int id, String name, String phone, String description, String hours, boolean isFavorite, List<Tag> tags) {
+	public Place(Cursor cursor, List<Tag> tags) {
 		Log.d(TAG, "Place: Called.");
 
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.hours = hours;
+		id = cursor.getInt(cursor.getColumnIndex(QueryHelper.COL_PLACES_ID));
+		name = cursor.getString(cursor.getColumnIndex(QueryHelper.COL_PLACES_NAME));
+		phoneRaw = cursor.getString(cursor.getColumnIndex(QueryHelper.COL_PLACES_PHONE));
+		description = cursor.getString(cursor.getColumnIndex(QueryHelper.COL_PLACES_DESCRIPTION));
+		hours = cursor.getString(cursor.getColumnIndex(QueryHelper.COL_PLACES_HOURS));
+		isFavorite = cursor.getInt(cursor.getColumnIndex(QueryHelper.COL_PLACES_IS_FAVORITE)) > 0;
 
-		phoneRaw = phone;
-		this.phone = phone == null || phone.length() != 10 ?
-			phone :
-			String.format("(%s) %s-%s", phone.substring(0, 3), phone.substring(3, 6), phone.substring(6));
+		phone = phoneRaw == null || phoneRaw.length() != 10 ?
+			phoneRaw :
+			String.format("(%s) %s-%s", phoneRaw.substring(0, 3), phoneRaw.substring(3, 6), phoneRaw.substring(6));
 
-		this.isFavorite = isFavorite;
 		this.tags = tags;
 	}
 
@@ -87,9 +88,9 @@ public class Place {
 		int    id;
 		String name;
 
-		public Tag(int id, String name) {
-			this.id = id;
-			this.name = name;
+		public Tag(Cursor cursor) {
+			id = cursor.getInt(cursor.getColumnIndex(QueryHelper.COL_TAGS_ID));
+			name = cursor.getString(cursor.getColumnIndex(QueryHelper.COL_TAGS_NAME));
 		}
 
 		public int getId() {

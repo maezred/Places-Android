@@ -14,7 +14,6 @@ import net.moltendorf.places.model.Place;
 import net.moltendorf.places.model.QueryHelper;
 import net.moltendorf.places.viewholder.PlaceViewHolder;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,8 +35,6 @@ public class SearchActivity extends BaseActivity {
 	public static final String EXTRA_TAG_ID = "tagId";
 
 	private static final int EXTRA_TAG_ID_DEFAULT = -1;
-
-	Collection placesAdapterData = new ArrayList<>();
 
 	private PlacesListAdapter placesAdapter;
 	private RecyclerView      placesListView;
@@ -79,7 +76,7 @@ public class SearchActivity extends BaseActivity {
 			put(Place.class, PlaceViewHolder.class);
 		}};
 
-		placesAdapter = new PlacesListAdapter(this, relations, placesAdapterData);
+		placesAdapter = new PlacesListAdapter(this, relations, null);
 
 		placesAdapter.addEventListener(new PlaceViewHolder.OnOpenDetailsListener() {
 			@Override
@@ -105,6 +102,8 @@ public class SearchActivity extends BaseActivity {
 	private void handleIntent(Intent intent) {
 		String action = intent.getAction();
 
+		Collection dataSet;
+
 		action:
 		{
 			if (action != null) {
@@ -113,35 +112,30 @@ public class SearchActivity extends BaseActivity {
 						String query = intent.getStringExtra(SearchManager.QUERY);
 						Log.i(TAG, "handleIntent: Performing search for \"" + query + "\".");
 
-						swapAdapterDataSet(queryHelper.searchPlaces(query).values());
+						dataSet = queryHelper.searchPlaces(query);
 						break action;
 
 					case ACTION_TAG_ID_SEARCH:
 						int tagId = intent.getIntExtra(EXTRA_TAG_ID, EXTRA_TAG_ID_DEFAULT);
 						Log.i(TAG, "handleIntent: Looking up places with tag_id \"" + tagId + "\".");
 
-						swapAdapterDataSet(queryHelper.getPlacesByTagId(tagId).values());
+						dataSet = queryHelper.getPlacesByTagId(tagId);
 						break action;
 
 					case ACTION_FAVORITE_SEARCH:
 						Log.i(TAG, "handleIntent: Looking up places that are favorited.");
 
-						swapAdapterDataSet(queryHelper.getPlacesByFavorite().values());
+						dataSet = queryHelper.getPlacesByFavorite();
 						break action;
 				}
 			}
 
 			Log.i(TAG, "handleIntent: Getting all places.");
-			swapAdapterDataSet(queryHelper.getPlaces().values());
+			dataSet = queryHelper.getPlaces().values();
 		}
 
-		Log.i(TAG, "handleIntent: Found " + placesAdapterData.size() + " results.");
-	}
+		placesAdapter.changeDataSet(dataSet);
 
-	private void swapAdapterDataSet(Collection newAdapterData) {
-		placesAdapterData.clear();
-		placesAdapterData.addAll(newAdapterData);
-
-		placesAdapter.notifyDataSetChanged();
+		Log.i(TAG, "handleIntent: Found " + dataSet.size() + " results.");
 	}
 }

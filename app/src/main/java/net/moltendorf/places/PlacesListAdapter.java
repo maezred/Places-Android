@@ -24,7 +24,7 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 	private static final String TAG = "PlacesListAdapter";
 
 	private Context    context;
-	private Collection objects;
+	private Collection dataSet;
 
 	private Map<Class<?>, Integer> viewTypeLookup;
 	private Class<?>[]             viewHolderLookup; // We already guarantee it extends ViewHolder.
@@ -32,11 +32,11 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 	private List<WeakReference<ViewHolder>> holderReferences = new LinkedList<>();
 	private List<EventListener>             eventListeners   = new ArrayList<>();
 
-	public PlacesListAdapter(Context context, Map<Class<?>, Class<? extends ViewHolder>> relations, Collection objects) {
+	public PlacesListAdapter(Context context, Map<Class<?>, Class<? extends ViewHolder>> relations, Collection dataSet) {
 		Log.d(TAG, "PlacesListAdapter: Called.");
 
 		this.context = context;
-		this.objects = objects;
+		this.dataSet = dataSet;
 
 		// Create lookups.
 		int size = relations.size();
@@ -55,7 +55,7 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 	@Override
 	public int getItemViewType(int position) {
 		// Todo: add more helpful exception when no class to resource relationship exists.
-		return viewTypeLookup.get(objects.toArray()[position].getClass());
+		return viewTypeLookup.get(dataSet.toArray()[position].getClass());
 	}
 
 	@Override
@@ -82,12 +82,18 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
-		holder.bindTo(objects.toArray()[position], position);
+		holder.bindTo(dataSet.toArray()[position], position);
 	}
 
 	@Override
 	public int getItemCount() {
-		return objects.size();
+		return dataSet.size();
+	}
+
+	public void changeDataSet(Collection dataSet) {
+		this.dataSet = dataSet;
+
+		notifyDataSetChanged();
 	}
 
 	public void addEventListener(EventListener listener) {

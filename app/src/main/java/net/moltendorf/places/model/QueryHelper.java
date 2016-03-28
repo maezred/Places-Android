@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import net.moltendorf.places.CursorList;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -33,7 +35,7 @@ public class QueryHelper extends SQLiteAssetHelper {
 		TBL_TAGSPELLINGS = "tagspellings";
 
 	// Places table columns.
-	private static final String
+	static final String
 		COL_PLACES_ID          = "place_id", // Also used in placetags table.
 		COL_PLACES_NAME        = "place_name",
 		COL_PLACES_PHONE       = "place_phone",
@@ -42,12 +44,12 @@ public class QueryHelper extends SQLiteAssetHelper {
 		COL_PLACES_IS_FAVORITE = "place_is_favorite";
 
 	// Tags table columns.
-	private static final String
+	static final String
 		COL_TAGS_ID   = "tag_id", // Also used in placetags and tagspelling tables.
 		COL_TAGS_NAME = "tag_name";
 
 	// Tag spellings table columns.
-	private static final String
+	static final String
 		COL_TAGSPELLINGS_SPELLING = "tagspelling_spelling";
 
 	/**
@@ -151,6 +153,16 @@ public class QueryHelper extends SQLiteAssetHelper {
 	private Map<Integer, Place> places;
 
 	/**
+	 * Place factory.
+	 */
+	private CursorList.Factory<Place> placeFactory = new CursorList.Factory<Place>() {
+		@Override
+		public Place getInstance(Cursor cursor) {
+			return places.get(cursor.getInt(cursor.getColumnIndex(COL_PLACES_ID)));
+		}
+	};
+
+	/**
 	 * Constructor
 	 */
 	private QueryHelper(Context context) {
@@ -169,33 +181,25 @@ public class QueryHelper extends SQLiteAssetHelper {
 		return places;
 	}
 
-	public Map<Integer, Place> getPlacesByTagId(int tagId) {
+	public CursorList<Place> getPlacesByTagId(int tagId) {
 		SQLiteDatabase db = getReadableDatabase();
 
 		Cursor cursor = db.rawQuery(SQL_GET_ALL_PLACES_BY_TAG_ID, new String[]{
 			Integer.toString(tagId)
 		});
 
-		Map<Integer, Place> foundPlaces = createPlacesMapFromCursor(cursor);
-
-		cursor.close();
-
-		return foundPlaces;
+		return new CursorList<>(cursor, placeFactory);
 	}
 
 	/**
 	 * @return Place by favorite lookup.
 	 */
-	public Map<Integer, Place> getPlacesByFavorite() {
+	public CursorList<Place> getPlacesByFavorite() {
 		SQLiteDatabase db = getReadableDatabase();
 
 		Cursor cursor = db.rawQuery(SQL_GET_ALL_PLACES_BY_FAVORITE, null);
 
-		Map<Integer, Place> foundPlaces = createPlacesMapFromCursor(cursor);
-
-		cursor.close();
-
-		return foundPlaces;
+		return new CursorList<>(cursor, placeFactory);
 	}
 
 	/**
@@ -210,7 +214,7 @@ public class QueryHelper extends SQLiteAssetHelper {
 	 * @param query Search query.
 	 * @return Map containing all places found.
 	 */
-	public Map<Integer, Place> searchPlaces(String query) {
+	public CursorList<Place> searchPlaces(String query) {
 		// Clean up the query string. Replace newlines with spaces.
 		// Remove consecutive, leading, and trailing spaces.
 		query = query.replaceAll("(?:\\r|\\r?\\n)+", " ").replaceAll("(?:\\s{2,})", " ").trim();
@@ -246,11 +250,7 @@ public class QueryHelper extends SQLiteAssetHelper {
 
 		Cursor cursor = db.rawQuery(SQLQuery, searchArray);
 
-		Map<Integer, Place> foundPlaces = createPlacesMapFromCursor(cursor);
-
-		cursor.close();
-
-		return foundPlaces;
+		return new CursorList<>(cursor, placeFactory);
 	}
 
 	public Map<Integer, Place.Tag> getAllTags() {
@@ -301,10 +301,7 @@ public class QueryHelper extends SQLiteAssetHelper {
 		tags = new LinkedHashMap<>(cursor.getCount());
 
 		while (!cursor.isAfterLast()) {
-			Place.Tag tag = new Place.Tag(
-				cursor.getInt(cursor.getColumnIndex(COL_TAGS_ID)),
-				cursor.getString(cursor.getColumnIndex(COL_TAGS_NAME))
-			);
+			Place.Tag tag = new Place.Tag(cursor);
 
 			tags.put(tag.getId(), tag);
 
@@ -345,15 +342,7 @@ public class QueryHelper extends SQLiteAssetHelper {
 
 			tagCursor.close();
 
-			Place place = new Place(
-				cursor.getInt(cursor.getColumnIndex(COL_PLACES_ID)),
-				cursor.getString(cursor.getColumnIndex(COL_PLACES_NAME)),
-				cursor.getString(cursor.getColumnIndex(COL_PLACES_PHONE)),
-				cursor.getString(cursor.getColumnIndex(COL_PLACES_DESCRIPTION)),
-				cursor.getString(cursor.getColumnIndex(COL_PLACES_HOURS)),
-				cursor.getInt(cursor.getColumnIndex(COL_PLACES_IS_FAVORITE)) > 0,
-				placeTags
-			);
+			Place place = new Place(cursor, placeTags);
 
 			// Put the place into the places map.
 			places.put(place.getId(), place);
@@ -364,22 +353,5 @@ public class QueryHelper extends SQLiteAssetHelper {
 		cursor.close();
 
 		Log.i(TAG, "populateAllPlaces: Loaded " + places.size() + " places.");
-	}
-
-	private Map<Integer, Place> createPlacesMapFromCursor(Cursor cursor) {
-		Map<Integer, Place> foundPlaces = new LinkedHashMap<>(cursor.getCount());
-
-		cursor.moveToFirst();
-
-		while (!cursor.isAfterLast()) {
-			int id = cursor.getInt(cursor.getColumnIndex(COL_PLACES_ID));
-
-			// Put a reference to our place in the new map containing the search results.
-			foundPlaces.put(id, places.get(id));
-
-			cursor.moveToNext();
-		}
-
-		return foundPlaces;
 	}
 }
