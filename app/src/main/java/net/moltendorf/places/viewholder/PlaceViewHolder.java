@@ -3,7 +3,6 @@ package net.moltendorf.places.viewholder;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -12,9 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.moltendorf.places.PlacesListAdapter;
-import net.moltendorf.places.model.Place;
 import net.moltendorf.places.R;
 import net.moltendorf.places.ViewPool;
+import net.moltendorf.places.model.Place;
 
 import java.util.EventListener;
 import java.util.LinkedHashSet;
@@ -48,8 +47,6 @@ public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 		itemView.findViewById(R.id.place_details).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.d(TAG, "onClick: place_details");
-
 				callOnOpenDetails();
 			}
 		});
@@ -57,8 +54,6 @@ public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 		((CheckBox) itemView.findViewById(R.id.place_favorite)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				Log.d(TAG, "onCheckedChanged: place_favorite");
-
 				callOnFavoriteChanged(isChecked);
 			}
 		});
@@ -69,14 +64,10 @@ public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 				if (place.getPhone() == null) {
 					itemView.findViewById(R.id.place_details).performClick();
 				} else {
-					Log.d(TAG, "onClick: place_phone");
-
 					callOnPhoneClicked();
 				}
 			}
 		});
-
-		Log.d(TAG, "PlaceViewHolder: Called.");
 	}
 
 	@Override
