@@ -7,13 +7,14 @@
 	android:layout_marginLeft="8dp"
 	android:layout_marginRight="8dp"
 	android:layout_marginStart="8dp"
-	android:background="@color/colorGray"
+	android:background="@color/accent"
 	android:paddingBottom="6dp"
 	android:paddingEnd="8dp"
 	android:paddingLeft="8dp"
 	android:paddingRight="8dp"
 	android:paddingStart="8dp"
 	android:paddingTop="4dp"
-	android:textColor="@color/colorDarkGray">
+	android:text="@string/placeholder_tag"
+	android:textColor="@color/secondary_text">
 
 </TextView>

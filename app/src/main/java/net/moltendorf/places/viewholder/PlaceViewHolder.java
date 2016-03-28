@@ -101,11 +101,11 @@ public class PlaceViewHolder extends PlacesListAdapter.ViewHolder {
 		favoriteCheckBox.setChecked(place.isFavorite());
 
 		String phone      = place.getPhone();
-		int    phoneColor = android.R.color.black;
+		int    phoneColor = R.color.primary_text;
 
 		if (phone == null) {
 			phone = "No number listed";
-			phoneColor = android.R.color.darker_gray;
+			phoneColor = R.color.secondary_text;
 		}
 
 		phoneView.setText(phone);
