@@ -375,10 +375,7 @@ public class QueryHelper extends SQLiteAssetHelper {
 			int id = cursor.getInt(cursor.getColumnIndex(COL_PLACES_ID));
 
 			// Put a reference to our place in the new map containing the search results.
-			foundPlaces.put(
-				id,
-				places.get(id)
-			);
+			foundPlaces.put(id, places.get(id));
 
 			cursor.moveToNext();
 		}
