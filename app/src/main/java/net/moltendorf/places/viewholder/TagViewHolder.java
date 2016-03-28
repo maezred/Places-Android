@@ -36,7 +36,7 @@ public class TagViewHolder extends PlacesListAdapter.ViewHolder {
 	public void bindTo(Object object, int position) {
 		tag = (Place.Tag) object;
 
-		((TextView) itemView).setText(tag.getName());
+		((TextView) itemView.findViewById(R.id.tag_name)).setText(tag.getName());
 	}
 
 	public void addOnTagClickListener(OnTagClickListener listener) {
