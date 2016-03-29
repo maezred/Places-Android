@@ -3,21 +3,23 @@ package net.moltendorf.places;
 import android.database.Cursor;
 
 import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CursorList<T> extends AbstractList {
-	private Cursor     cursor;
-	private Factory<T> factory;
-	private int        count;
-	private List<T>    cache;
+	private static final String TAG = "CursorList";
+
+	private Cursor          cursor;
+	private Factory<T>      factory;
+	private int             count;
+	private Map<Integer, T> cache;
 
 	public CursorList(Cursor cursor, Factory<T> factory) {
 		this.cursor = cursor;
 		this.factory = factory;
 
 		count = cursor.getCount();
-		cache = new ArrayList<>(count);
+		cache = new HashMap<>(count);
 	}
 
 	@Override
@@ -26,12 +28,16 @@ public class CursorList<T> extends AbstractList {
 			return null;
 		}
 
-		T item = cache.get(location);
+		T item = null;
+
+		if (cache.size() > location) {
+			item = cache.get(location);
+		}
 
 		if (item == null) {
-			cursor.move(location);
+			cursor.moveToPosition(location);
 			item = factory.getInstance(cursor);
-			cache.set(location, item);
+			cache.put(location, item);
 		}
 
 		return item;
