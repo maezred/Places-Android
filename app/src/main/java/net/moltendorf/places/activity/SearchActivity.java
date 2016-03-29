@@ -14,8 +14,9 @@ import net.moltendorf.places.model.Place;
 import net.moltendorf.places.model.QueryHelper;
 import net.moltendorf.places.viewholder.PlaceViewHolder;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -102,7 +103,7 @@ public class SearchActivity extends BaseActivity {
 	private void handleIntent(Intent intent) {
 		String action = intent.getAction();
 
-		Collection dataSet;
+		List dataSet;
 
 		action:
 		{
@@ -131,7 +132,7 @@ public class SearchActivity extends BaseActivity {
 			}
 
 			Log.i(TAG, "handleIntent: Getting all places.");
-			dataSet = queryHelper.getPlaces().values();
+			dataSet = new ArrayList<>(queryHelper.getPlaces().values());
 		}
 
 		placesAdapter.changeDataSet(dataSet);

@@ -13,6 +13,7 @@ import net.moltendorf.places.model.Place;
 import net.moltendorf.places.model.QueryHelper;
 import net.moltendorf.places.viewholder.TagViewHolder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,7 +58,7 @@ public class TagsActivity extends BaseActivity {
 			put(Place.Tag.class, TagViewHolder.class);
 		}};
 
-		tagsAdapter = new PlacesListAdapter(this, relations, queryHelper.getAllTags().values());
+		tagsAdapter = new PlacesListAdapter(this, relations, new ArrayList<>(queryHelper.getAllTags().values()));
 		tagsAdapter.addEventListener(new TagViewHolder.OnTagClickListener() {
 			@Override
 			public void onTagClicked(Place.Tag tag) {

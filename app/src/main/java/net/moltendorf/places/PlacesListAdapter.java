@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,8 +22,8 @@ import java.util.Map;
 public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.ViewHolder> {
 	private static final String TAG = "PlacesListAdapter";
 
-	private Context    context;
-	private Collection dataSet;
+	private Context context;
+	private List    dataSet;
 
 	private Map<Class<?>, Integer> viewTypeLookup;
 	private Class<?>[]             viewHolderLookup; // We already guarantee it extends ViewHolder.
@@ -32,7 +31,7 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 	private List<WeakReference<ViewHolder>> holderReferences = new LinkedList<>();
 	private List<EventListener>             eventListeners   = new ArrayList<>();
 
-	public PlacesListAdapter(Context context, Map<Class<?>, Class<? extends ViewHolder>> relations, Collection dataSet) {
+	public PlacesListAdapter(Context context, Map<Class<?>, Class<? extends ViewHolder>> relations, List dataSet) {
 		Log.d(TAG, "PlacesListAdapter: Called.");
 
 		this.context = context;
@@ -55,7 +54,7 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 	@Override
 	public int getItemViewType(int position) {
 		// Todo: add more helpful exception when no class to resource relationship exists.
-		return viewTypeLookup.get(dataSet.toArray()[position].getClass());
+		return viewTypeLookup.get(dataSet.get(position).getClass());
 	}
 
 	@Override
@@ -82,7 +81,7 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
-		holder.bindTo(dataSet.toArray()[position], position);
+		holder.bindTo(dataSet.get(position), position);
 	}
 
 	@Override
@@ -90,7 +89,7 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 		return dataSet.size();
 	}
 
-	public void changeDataSet(Collection dataSet) {
+	public void changeDataSet(List dataSet) {
 		this.dataSet = dataSet;
 
 		notifyDataSetChanged();
