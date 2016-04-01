@@ -5,9 +5,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
-import java.util.LinkedList;
 
 /**
  * Provides a simple view recycling implementation that can be easily shared among layouts.
@@ -21,7 +21,7 @@ public class ViewPool<T> {
 	private int       resource;
 	private ViewGroup viewGroup;
 
-	private Deque<T> pool = new LinkedList<>();
+	private Deque<T> pool = new ArrayDeque<>();
 
 	public ViewPool(Context context, int resource, Class<? extends ViewGroup> parentClass) {
 		this.context = context;
