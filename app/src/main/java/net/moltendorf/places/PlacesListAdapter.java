@@ -26,24 +26,24 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 	private List    dataSet;
 
 	private Map<Class<?>, Integer> viewTypeLookup;
-	private Class<?>[]             viewHolderLookup; // We already guarantee it extends ViewHolder.
+	private Factory[]              viewHolderLookup;
 
 	private List<WeakReference<ViewHolder>> holderReferences = new LinkedList<>();
 	private List<EventListener>             eventListeners   = new ArrayList<>();
 
-	public PlacesListAdapter(Context context, Map<Class<?>, Class<? extends ViewHolder>> relations, List dataSet) {
+	public PlacesListAdapter(Context context, Map<Class<?>, Factory> factories, List dataSet) {
 		Log.d(TAG, "PlacesListAdapter: Called.");
 
 		this.context = context;
 		this.dataSet = dataSet;
 
 		// Create lookups.
-		int size = relations.size();
+		int size = factories.size();
 		viewTypeLookup = new HashMap<>(size);
-		viewHolderLookup = new Class<?>[size];
+		viewHolderLookup = new Factory[size];
 
 		int i = 0;
-		for (Map.Entry<Class<?>, Class<? extends ViewHolder>> entry : relations.entrySet()) {
+		for (Map.Entry<Class<?>, Factory> entry : factories.entrySet()) {
 			viewTypeLookup.put(entry.getKey(), i);
 			viewHolderLookup[i] = entry.getValue();
 
@@ -61,10 +61,7 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		try {
 			// Todo: better type safety guarantees using more generics so we don't crash here as often?
-			ViewHolder holder = viewHolderLookup[viewType]
-				.asSubclass(ViewHolder.class)
-				.getConstructor(Context.class, ViewGroup.class)
-				.newInstance(context, parent);
+			ViewHolder holder = viewHolderLookup[viewType].createViewHolder(context, parent);
 
 			for (EventListener listener : eventListeners) {
 				setEventListenerBinding("add", holder, listener);
@@ -149,6 +146,10 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Vi
 					"We are looking for: " + "public void " + method + "(" + name + " listener) { /* ... */ }"
 			);
 		}
+	}
+
+	public interface Factory<T extends ViewHolder> {
+		T createViewHolder(Context context, ViewGroup parent);
 	}
 
 	public static abstract class ViewHolder extends RecyclerView.ViewHolder {
