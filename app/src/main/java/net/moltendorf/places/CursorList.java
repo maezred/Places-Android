@@ -52,7 +52,7 @@ public class CursorList<T> extends AbstractList {
 
 	}
 
-	public abstract static class Factory<T> {
-		abstract public T getInstance(Cursor cursor);
+	public interface Factory<T> {
+		T getInstance(Cursor cursor);
 	}
 }
