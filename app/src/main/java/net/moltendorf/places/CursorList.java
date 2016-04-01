@@ -9,12 +9,12 @@ import java.util.Map;
 public class CursorList<T> extends AbstractList {
 	private static final String TAG = "CursorList";
 
-	private Cursor          cursor;
-	private Factory<T>      factory;
-	private int             count;
-	private Map<Integer, T> cache;
+	private Cursor               cursor;
+	private Factory<? extends T> factory;
+	private int                  count;
+	private Map<Integer, T>      cache;
 
-	public CursorList(Cursor cursor, Factory<T> factory) {
+	public CursorList(Cursor cursor, Factory<? extends T> factory) {
 		this.cursor = cursor;
 		this.factory = factory;
 
