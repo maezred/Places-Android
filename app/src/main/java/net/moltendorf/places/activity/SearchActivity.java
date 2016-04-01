@@ -1,11 +1,13 @@
 package net.moltendorf.places.activity;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ViewGroup;
 
 import net.moltendorf.places.BaseActivity;
 import net.moltendorf.places.PlacesListAdapter;
@@ -72,12 +74,17 @@ public class SearchActivity extends BaseActivity {
 	}
 
 	private void createPlacesAdapter() {
-		Map<Class<?>, Class<? extends PlacesListAdapter.ViewHolder>> relations;
-		relations = new HashMap<Class<?>, Class<? extends PlacesListAdapter.ViewHolder>>(1) {{
-			put(Place.class, PlaceViewHolder.class);
+		Map<Class<?>, PlacesListAdapter.Factory> factories;
+		factories = new HashMap<Class<?>, PlacesListAdapter.Factory>(1) {{
+			put(Place.class, new PlacesListAdapter.Factory() {
+				@Override
+				public PlacesListAdapter.ViewHolder createViewHolder(Context context, ViewGroup parent) {
+					return new PlaceViewHolder(context, parent);
+				}
+			});
 		}};
 
-		placesAdapter = new PlacesListAdapter(this, relations, null);
+		placesAdapter = new PlacesListAdapter(this, factories, null);
 
 		placesAdapter.addEventListener(new PlaceViewHolder.OnOpenDetailsListener() {
 			@Override

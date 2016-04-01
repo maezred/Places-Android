@@ -1,10 +1,12 @@
 package net.moltendorf.places.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ViewGroup;
 
 import net.moltendorf.places.BaseActivity;
 import net.moltendorf.places.PlacesListAdapter;
@@ -53,12 +55,17 @@ public class TagsActivity extends BaseActivity {
 	}
 
 	private void createTagsAdapter() {
-		Map<Class<?>, Class<? extends PlacesListAdapter.ViewHolder>> relations;
-		relations = new HashMap<Class<?>, Class<? extends PlacesListAdapter.ViewHolder>>() {{
-			put(Place.Tag.class, TagViewHolder.class);
+		Map<Class<?>, PlacesListAdapter.Factory> factories;
+		factories = new HashMap<Class<?>, PlacesListAdapter.Factory>() {{
+			put(Place.Tag.class, new PlacesListAdapter.Factory() {
+				@Override
+				public PlacesListAdapter.ViewHolder createViewHolder(Context context, ViewGroup parent) {
+					return new TagViewHolder(context, parent);
+				}
+			});
 		}};
 
-		tagsAdapter = new PlacesListAdapter(this, relations, new ArrayList<>(queryHelper.getAllTags().values()));
+		tagsAdapter = new PlacesListAdapter(this, factories, new ArrayList<>(queryHelper.getAllTags().values()));
 		tagsAdapter.addEventListener(new TagViewHolder.OnTagClickListener() {
 			@Override
 			public void onTagClicked(Place.Tag tag) {
